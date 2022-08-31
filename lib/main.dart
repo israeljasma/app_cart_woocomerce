@@ -4,7 +4,7 @@ import 'package:app_cart_woocomerce/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const AppState());
 
 class AppState extends StatelessWidget {
   const AppState({Key? key}) : super(key: key);
