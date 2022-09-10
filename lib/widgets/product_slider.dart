@@ -1,10 +1,16 @@
+import 'package:app_cart_woocomerce/models/products_response.dart';
 import 'package:flutter/material.dart';
 
 class ProductSlider extends StatelessWidget {
-  const ProductSlider({Key? key}) : super(key: key);
+  final List<ProductModel> products;
+  const ProductSlider({
+    Key? key,
+    required this.products,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Container(
       width: double.infinity,
       height: 265,
@@ -23,8 +29,13 @@ class ProductSlider extends StatelessWidget {
           Expanded(
             child: ListView.builder(
               scrollDirection: Axis.horizontal,
-              itemCount: 20,
-              itemBuilder: (_, index) => const _ProductPoster(),
+              itemCount: products.length,
+              itemBuilder: (context, index) {
+                final product = products[index];
+                return _ProductPoster(
+                  product: product,
+                );
+              },
             ),
           )
         ],
@@ -34,7 +45,11 @@ class ProductSlider extends StatelessWidget {
 }
 
 class _ProductPoster extends StatelessWidget {
-  const _ProductPoster({Key? key}) : super(key: key);
+  final ProductModel product;
+  const _ProductPoster({
+    Key? key,
+    required this.product,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -49,27 +64,27 @@ class _ProductPoster extends StatelessWidget {
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(20),
-              child: const FadeInImage(
+              child: FadeInImage(
                 placeholder: AssetImage('assets/jar-loading.gif'),
-                image: AssetImage('assets/jar-loading.gif'),
+                image: NetworkImage(product.images.first.src),
                 width: 150,
                 height: 190,
                 fit: BoxFit.cover,
               ),
             ),
             const SizedBox(height: 5),
-            const Flexible(
+            Flexible(
               child: Text(
-                'Titulo',
+                product.name,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
                 textAlign: TextAlign.center,
               ),
             ),
             const SizedBox(height: 5),
-            const Flexible(
+            Flexible(
               child: Text(
-                'Valor',
+                product.price,
                 overflow: TextOverflow.ellipsis,
                 maxLines: 2,
                 textAlign: TextAlign.center,

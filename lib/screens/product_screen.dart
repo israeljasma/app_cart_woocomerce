@@ -17,7 +17,7 @@ class ProductScreen extends StatelessWidget {
             children: const <Widget>[
               _ProductDetail(),
               _ProductDescription(),
-              ProductSlider(),
+              // ProductSlider(),
             ],
           ),
         ));
