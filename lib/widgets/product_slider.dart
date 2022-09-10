@@ -11,6 +11,15 @@ class ProductSlider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    if (products.isEmpty) {
+      return Container(
+        width: double.infinity,
+        height: 265,
+        child: const Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
     return Container(
       width: double.infinity,
       height: 265,
@@ -65,7 +74,7 @@ class _ProductPoster extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: FadeInImage(
-                placeholder: AssetImage('assets/jar-loading.gif'),
+                placeholder: const AssetImage('assets/jar-loading.gif'),
                 image: NetworkImage(product.images.first.src),
                 width: 150,
                 height: 190,
