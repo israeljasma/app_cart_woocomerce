@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:app_cart_woocomerce/models/models.dart';
 import 'package:app_cart_woocomerce/models/products_response.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -10,9 +11,11 @@ class WoocomerceProvider extends ChangeNotifier {
   final String _baseUrl = 'hostingincreible.cl';
 
   List<ProductModel> onDisplayProducts = [];
+  List<Category> productsCategories = [];
   WoocomerceProvider() {
     print('WoocomerceProvider inicializado');
     getOnDisplayWoocomerce();
+    getCategories();
   }
 
   Future<String> _getJsonData(String endPoint) async {
@@ -33,6 +36,16 @@ class WoocomerceProvider extends ChangeNotifier {
         .toList();
 
     onDisplayProducts = products;
+    notifyListeners();
+  }
+
+  getCategories() async {
+    final jsonData = await _getJsonData('/wp-json/wc/v3/products/categories');
+    List<Category> categories = (json.decode(jsonData) as List)
+        .map((data) => Category.fromJson(data))
+        .toList();
+
+    productsCategories = categories;
     notifyListeners();
   }
 }
