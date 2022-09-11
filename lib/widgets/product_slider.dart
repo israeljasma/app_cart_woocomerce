@@ -14,7 +14,7 @@ class ProductSlider extends StatelessWidget {
     if (products.isEmpty) {
       return Container(
         width: double.infinity,
-        height: 265,
+        height: 270,
         child: const Center(
           child: CircularProgressIndicator(),
         ),
@@ -22,7 +22,7 @@ class ProductSlider extends StatelessWidget {
     }
     return Container(
       width: double.infinity,
-      height: 265,
+      height: 270,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
