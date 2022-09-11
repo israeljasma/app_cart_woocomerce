@@ -13,15 +13,14 @@ class StoreScreen extends StatefulWidget {
 class _StoreScreenState extends State<StoreScreen> {
   @override
   Widget build(BuildContext context) {
-    final productsProviders = Provider.of<WoocomerceProvider>(context);
+    final providersAPI = Provider.of<WoocomerceProvider>(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            ProductSlider(
-              products: productsProviders.onDisplayProducts,
-            ),
+            ProductSlider(products: providersAPI.onDisplayProducts),
+            CategorySlider(categories: providersAPI.productsCategories)
           ],
         ),
       ),
