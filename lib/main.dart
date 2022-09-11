@@ -1,4 +1,4 @@
-import 'package:app_cart_woocomerce/providers/woocomerce_prodivders.dart';
+import 'package:app_cart_woocomerce/providers/woocomerce_providers.dart';
 import 'package:app_cart_woocomerce/screens/screens.dart';
 import 'package:app_cart_woocomerce/theme/app_theme.dart';
 import 'package:flutter/material.dart';

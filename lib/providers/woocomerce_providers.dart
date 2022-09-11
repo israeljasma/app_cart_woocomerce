@@ -15,21 +15,24 @@ class WoocomerceProvider extends ChangeNotifier {
     getOnDisplayWoocomerce();
   }
 
-  getOnDisplayWoocomerce() async {
-    print('getOnDisplayWoocomerce');
-    var url = Uri.https(_baseUrl, '/wp-json/wc/v3/products', {
+  Future<String> _getJsonData(String endPoint) async {
+    var url = Uri.https(_baseUrl, endPoint, {
       'consumer_key': _consumerKey,
       'consumer_secret': _consumerSecret,
     });
 
     final response = await http.get(url);
-    List<ProductModel> products = (json.decode(response.body) as List)
+    return response.body;
+  }
+
+  getOnDisplayWoocomerce() async {
+    print('getOnDisplayWoocomerce');
+    final jsonData = await _getJsonData('/wp-json/wc/v3/products');
+    List<ProductModel> products = (json.decode(jsonData) as List)
         .map((data) => ProductModel.fromJson(data))
         .toList();
-    print(products[0].images.first.src);
 
     onDisplayProducts = products;
-
     notifyListeners();
   }
 }
