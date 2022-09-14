@@ -11,7 +11,7 @@ class ProductModel {
   String name;
   String description;
   String price;
-  List<Image> images;
+  List<ImageModel> images;
 
   ProductModel({
     required this.id,
@@ -27,7 +27,8 @@ class ProductModel {
       name: json['name'],
       description: json['description'],
       price: json['price'],
-      images: List<Image>.from(json["images"].map((x) => Image.fromMap(x))),
+      images: List<ImageModel>.from(
+          json["images"].map((x) => ImageModel.fromMap(x))),
     );
   }
 }

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-class Image {
-  Image({
+class ImageModel {
+  ImageModel({
     required this.id,
     required this.dateCreated,
     required this.dateCreatedGmt,
@@ -21,11 +21,12 @@ class Image {
   String name;
   String alt;
 
-  factory Image.fromJson(String str) => Image.fromMap(json.decode(str));
+  factory ImageModel.fromJson(String str) =>
+      ImageModel.fromMap(json.decode(str));
 
   String toJson() => json.encode(toMap());
 
-  factory Image.fromMap(Map<String, dynamic> json) => Image(
+  factory ImageModel.fromMap(Map<String, dynamic> json) => ImageModel(
         id: json["id"],
         dateCreated: DateTime.parse(json["date_created"]),
         dateCreatedGmt: DateTime.parse(json["date_created_gmt"]),
