@@ -71,7 +71,7 @@ class _ProductPoster extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20),
                 child: FadeInImage(
                   placeholder: const AssetImage('assets/jar-loading.gif'),
-                  image: NetworkImage(category.image),
+                  image: NetworkImage(category.image!.src),
                   width: 150,
                   height: 190,
                   fit: BoxFit.cover,
