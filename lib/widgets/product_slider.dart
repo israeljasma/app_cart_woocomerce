@@ -1,4 +1,5 @@
 import 'package:app_cart_woocomerce/models/products_response.dart';
+import 'package:app_cart_woocomerce/screens/screens.dart';
 import 'package:flutter/material.dart';
 
 class ProductSlider extends StatelessWidget {
@@ -27,8 +28,8 @@ class ProductSlider extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
-            child: Text('Lorem ipmsum',
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+            child: Text('Últimos productos agregados',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -67,14 +68,23 @@ class _ProductPoster extends StatelessWidget {
       height: 190,
       margin: const EdgeInsets.symmetric(horizontal: 10),
       child: GestureDetector(
-        onTap: () => Navigator.pushNamed(context, 'product',
-            arguments: 'product-instance'),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProductDetailsScreen(product: product),
+            ),
+          );
+        }
+        // => Navigator.pushNamed(context, 'productDetails',
+        //     arguments: 'product-instance')
+        ,
         child: Column(
           children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(20),
               child: FadeInImage(
-                placeholder: const AssetImage('assets/jar-loading.gif'),
+                placeholder: const AssetImage('assets/loading-image.png'),
                 image: NetworkImage(product.images.first.src),
                 width: 150,
                 height: 190,

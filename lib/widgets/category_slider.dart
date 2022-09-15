@@ -70,7 +70,7 @@ class _ProductPoster extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: FadeInImage(
-                  placeholder: const AssetImage('assets/jar-loading.gif'),
+                  placeholder: const AssetImage('assets/loading-image.png'),
                   image: NetworkImage(category.image!.src),
                   width: 150,
                   height: 190,
@@ -81,7 +81,7 @@ class _ProductPoster extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: const FadeInImage(
-                  placeholder: AssetImage('assets/jar-loading.gif'),
+                  placeholder: AssetImage('assets/loading-image.png'),
                   image: AssetImage('assets/no-image.png'),
                   width: 150,
                   height: 190,
