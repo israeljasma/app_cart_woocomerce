@@ -13,6 +13,7 @@ class ProductModel {
   String shortDescription;
   String price;
   List<ImageModel> images;
+  List<int> relatedIds;
 
   ProductModel({
     required this.id,
@@ -21,6 +22,7 @@ class ProductModel {
     required this.shortDescription,
     required this.price,
     required this.images,
+    required this.relatedIds,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) {
@@ -32,6 +34,7 @@ class ProductModel {
       price: json['price'],
       images: List<ImageModel>.from(
           json["images"].map((x) => ImageModel.fromMap(x))),
+      relatedIds: json['related_ids'].cast<int>(),
     );
   }
 }
