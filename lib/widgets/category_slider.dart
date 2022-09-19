@@ -1,14 +1,49 @@
 import 'package:app_cart_woocomerce/models/models.dart';
+import 'package:app_cart_woocomerce/providers/woocomerce_providers.dart';
+import 'package:app_cart_woocomerce/screens/product_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class CategorySlider extends StatelessWidget {
+class CategorySlider extends StatefulWidget {
   final List<Category> categories;
-  const CategorySlider({Key? key, required this.categories}) : super(key: key);
+  final Function onNextPage;
+  const CategorySlider({
+    Key? key,
+    required this.categories,
+    required this.onNextPage,
+  }) : super(key: key);
+
+  @override
+  State<CategorySlider> createState() => _CategorySliderState();
+}
+
+class _CategorySliderState extends State<CategorySlider> {
+  final ScrollController scrollController = ScrollController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    scrollController.addListener(() {
+      if (scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent -
+              scrollController.position.maxScrollExtent * 0.2) {
+        print(scrollController.position.maxScrollExtent -
+            scrollController.position.maxScrollExtent * 0.2);
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    if (categories.isEmpty) {
+    if (widget.categories.isEmpty) {
       return Container(
         width: double.infinity,
         height: 270,
@@ -24,7 +59,7 @@ class CategorySlider extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20),
+            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
             child: Text(
               'Categorias',
               style: TextStyle(
@@ -36,10 +71,11 @@ class CategorySlider extends StatelessWidget {
           const SizedBox(height: 5),
           Expanded(
             child: ListView.builder(
+              controller: scrollController,
               scrollDirection: Axis.horizontal,
-              itemCount: categories.length,
+              itemCount: widget.categories.length,
               itemBuilder: (context, index) {
-                return _ProductPoster(category: categories[index]);
+                return _ProductPoster(category: widget.categories[index]);
               },
             ),
           )
@@ -58,12 +94,23 @@ class _ProductPoster extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final providersAPI = Provider.of<WoocomerceProvider>(context);
     return Container(
       width: 150,
       height: 190,
       margin: const EdgeInsets.symmetric(horizontal: 10),
       child: GestureDetector(
-        onTap: () {},
+        onTap: () {
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => ProductScreen(
+          //         onNextPage: () => providersAPI.getOnDisplayWoocomerce(
+          //             categoryId: '$category')
+          //             ),
+          //   ),
+          // );
+        },
         child: Column(
           children: [
             if (category.image != null)

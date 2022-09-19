@@ -12,6 +12,8 @@ class ProductModel {
   String description;
   String shortDescription;
   String price;
+  String regularPrice;
+  String salePrice;
   List<ImageModel> images;
   List<int> relatedIds;
 
@@ -21,6 +23,8 @@ class ProductModel {
     required this.description,
     required this.shortDescription,
     required this.price,
+    required this.regularPrice,
+    required this.salePrice,
     required this.images,
     required this.relatedIds,
   });
@@ -32,10 +36,21 @@ class ProductModel {
       description: json['description'],
       shortDescription: json['short_description'],
       price: json['price'],
+      regularPrice: json['regular_price'],
+      salePrice: json['sale_price'],
       images: List<ImageModel>.from(
           json["images"].map((x) => ImageModel.fromMap(x))),
       relatedIds: json['related_ids'].cast<int>(),
     );
+  }
+
+  calculateDiscount() {
+    double regularPrice = double.parse(this.regularPrice);
+    double price = regularPrice != '' ? double.parse(this.price) : regularPrice;
+    double discount = regularPrice - price;
+    double disPercent = (discount / regularPrice) * 100;
+
+    return disPercent.round();
   }
 }
 

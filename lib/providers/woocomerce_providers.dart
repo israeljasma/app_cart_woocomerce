@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:app_cart_woocomerce/models/models.dart';
-import 'package:app_cart_woocomerce/models/products_response.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -12,35 +11,117 @@ class WoocomerceProvider extends ChangeNotifier {
 
   List<ProductModel> onDisplayProducts = [];
   List<Category> productsCategories = [];
+  int _categoriesPage = 0;
   WoocomerceProvider() {
     print('WoocomerceProvider inicializado');
     getOnDisplayWoocomerce();
     getCategories();
   }
 
-  Future<String> _getJsonData(String endPoint) async {
-    var url = Uri.https(_baseUrl, endPoint, {
-      'consumer_key': _consumerKey,
+  Future<String> _getJsonData(String endPoint, Map parameters2) async {
+    Map<String, dynamic> parameters = {
       'consumer_secret': _consumerSecret,
-    });
+      'consumer_key': _consumerKey
+    };
+    // if (pageNumber != null) {
+    //   parameters.addAll({'page': pageNumber});
+    //   print('pageNumber');
+    // }
+
+    // if (pageSize != null) {
+    //   parameters.addAll({'per_page': pageSize});
+    //   print('pageSize');
+    // }
+
+    // if (strSearch != '') {
+    //   parameters.addAll({'search': strSearch});
+    //   // print('strSearch');
+    // }
+
+    // if (categoryId != null) {
+    //   parameters.addAll({'category': categoryId});
+    //   print(parameters);
+    //   print('categoryId');
+    //   print(categoryId);
+    // } else {
+    //   print('pum feo');
+    // }
+
+    // if (sortBy != null) {
+    //   parameters.addAll({'orderby': sortBy});
+    //   // print('sortBy');
+    // }
+
+    // if (sortOrder != null) {
+    //   parameters.addAll({'order': sortOrder});
+    //   // print('sortOrder');
+    // }
+
+    var url = Uri.https(_baseUrl, endPoint, parameters);
 
     final response = await http.get(url);
     return response.body;
   }
 
-  getOnDisplayWoocomerce() async {
+  getOnDisplayWoocomerce(
+      {int? pageNumber,
+      int? pageSize,
+      String? strSearch,
+      String? categoryId,
+      String? sortBy,
+      String? sortOrder}) async {
     print('getOnDisplayWoocomerce');
-    final jsonData = await _getJsonData('/wp-json/wc/v3/products');
+    Map<String, dynamic> parameters = {
+      'consumer_secret': _consumerSecret,
+      'consumer_key': _consumerKey
+    };
+    if (pageNumber != null) {
+      parameters.addAll({'page': pageNumber});
+      print('pageNumber');
+    }
+
+    if (pageSize != null) {
+      parameters.addAll({'per_page': pageSize});
+      print('pageSize');
+    }
+
+    if (strSearch != '') {
+      parameters.addAll({'search': strSearch});
+      // print('strSearch');
+    }
+
+    if (categoryId != null) {
+      parameters.addAll({'category': categoryId});
+    }
+
+    if (sortBy != null) {
+      parameters.addAll({'orderby': sortBy});
+      // print('sortBy');
+    }
+
+    if (sortOrder != null) {
+      parameters.addAll({'order': sortOrder});
+      // print('sortOrder');
+    }
+    final jsonData = await _getJsonData('/wp-json/wc/v3/products', parameters);
     List<ProductModel> products = (json.decode(jsonData) as List)
         .map((data) => ProductModel.fromJson(data))
         .toList();
 
     onDisplayProducts = products;
+    // print(products[9].price);
+    // print(products[9].regularPrice);
     notifyListeners();
   }
 
   getCategories() async {
-    final jsonData = await _getJsonData('/wp-json/wc/v3/products/categories');
+    _categoriesPage++;
+    Map<String, dynamic> parameters = {
+      'consumer_secret': _consumerSecret,
+      'consumer_key': _consumerKey
+    };
+    final jsonData =
+        await _getJsonData('/wp-json/wc/v3/products/categories', parameters);
     List<Category> categories = (json.decode(jsonData) as List)
         .map((data) => Category.fromJson(data))
         .toList();

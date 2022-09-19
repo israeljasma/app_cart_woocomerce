@@ -1,4 +1,5 @@
 import 'package:app_cart_woocomerce/providers/woocomerce_providers.dart';
+import 'package:app_cart_woocomerce/screens/screens.dart';
 import 'package:app_cart_woocomerce/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +21,10 @@ class _StoreScreenState extends State<StoreScreen> {
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ProductSlider(products: providersAPI.onDisplayProducts),
-            CategorySlider(categories: providersAPI.productsCategories)
+            CategorySlider(
+              categories: providersAPI.productsCategories,
+              onNextPage: () => providersAPI.getCategories(),
+            ),
           ],
         ),
       ),

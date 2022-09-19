@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
       initialRoute: 'home',
       routes: {
         'home': (_) => HomeScreen(),
-        'product': (_) => ProductScreen(),
+        // 'product': (_) => ProductScreen(),
       },
       theme: AppTheme.lighTheme,
     );
