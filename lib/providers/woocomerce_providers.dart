@@ -77,17 +77,14 @@ class WoocomerceProvider extends ChangeNotifier {
     };
     if (pageNumber != null) {
       parameters.addAll({'page': pageNumber});
-      print('pageNumber');
     }
 
     if (pageSize != null) {
       parameters.addAll({'per_page': pageSize});
-      print('pageSize');
     }
 
     if (strSearch != '') {
       parameters.addAll({'search': strSearch});
-      // print('strSearch');
     }
 
     if (categoryId != null) {
@@ -96,12 +93,10 @@ class WoocomerceProvider extends ChangeNotifier {
 
     if (sortBy != null) {
       parameters.addAll({'orderby': sortBy});
-      // print('sortBy');
     }
 
     if (sortOrder != null) {
       parameters.addAll({'order': sortOrder});
-      // print('sortOrder');
     }
     final jsonData = await _getJsonData('/wp-json/wc/v3/products', parameters);
     List<ProductModel> products = (json.decode(jsonData) as List)
@@ -109,8 +104,6 @@ class WoocomerceProvider extends ChangeNotifier {
         .toList();
 
     onDisplayProducts = products;
-    // print(products[9].price);
-    // print(products[9].regularPrice);
     notifyListeners();
   }
 
