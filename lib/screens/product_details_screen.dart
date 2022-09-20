@@ -21,7 +21,13 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('cambiar'),
+        title: const Text('App Cart Woocomerce'),
+        actions: <Widget>[
+          IconButton(
+            onPressed: () {},
+            icon: const Icon(Icons.shopping_cart),
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(right: 20, left: 20, top: 10),
