@@ -16,6 +16,7 @@ class CategorySlider extends StatefulWidget {
 
 class _CategorySliderState extends State<CategorySlider> {
   final ScrollController scrollController = ScrollController();
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -25,7 +26,7 @@ class _CategorySliderState extends State<CategorySlider> {
           scrollController.position.maxScrollExtent) {
         print(scrollController.position.maxScrollExtent -
             scrollController.position.maxScrollExtent);
-        widget.onNextPage();
+        fecthData();
       }
     });
   }
@@ -34,6 +35,15 @@ class _CategorySliderState extends State<CategorySlider> {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+  }
+
+  Future fecthData() async {
+    if (isLoading) return;
+    isLoading = true;
+    setState(() {});
+    widget.onNextPage();
+    await Future.delayed(const Duration(seconds: 1));
+    setState(() {});
   }
 
   @override
