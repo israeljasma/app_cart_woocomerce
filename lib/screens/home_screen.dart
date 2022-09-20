@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
+  static String routeName = "/home";
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -24,7 +25,10 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text('App Cart Woocomerce'),
         actions: <Widget>[
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, '/cart',
+                  arguments: 'movie-instance');
+            },
             icon: const Icon(Icons.shopping_cart),
           ),
         ],
