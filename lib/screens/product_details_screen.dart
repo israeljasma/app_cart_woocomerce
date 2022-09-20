@@ -66,18 +66,58 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
+                Column(
                   children: [
-                    Text(''),
-                    Text(
-                      '${widget.product.price}',
-                      style: TextStyle(
-                          fontSize: 25,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold),
-                    ),
+                    if (widget.product.calculateDiscount() > 0) ...[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Text(''),
+                          Text(
+                            widget.product.regularPrice,
+                            style: const TextStyle(
+                              fontSize: 20,
+                              decorationColor: Colors.red,
+                              decoration: TextDecoration.lineThrough,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Text(''),
+                          Text(
+                            widget.product.price,
+                            style: const TextStyle(
+                              fontSize: 25,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      )
+                    ] else ...[
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Text(''),
+                          Text(
+                            widget.product.price,
+                            style: const TextStyle(
+                              fontSize: 25,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ],
                 ),
                 const SizedBox(height: 10),
