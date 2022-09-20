@@ -1,8 +1,5 @@
 import 'package:app_cart_woocomerce/models/models.dart';
-import 'package:app_cart_woocomerce/providers/woocomerce_providers.dart';
-import 'package:app_cart_woocomerce/screens/product_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class CategorySlider extends StatefulWidget {
   final List<Category> categories;
@@ -22,14 +19,13 @@ class _CategorySliderState extends State<CategorySlider> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     scrollController.addListener(() {
       if (scrollController.position.pixels >=
-          scrollController.position.maxScrollExtent -
-              scrollController.position.maxScrollExtent * 0.2) {
+          scrollController.position.maxScrollExtent) {
         print(scrollController.position.maxScrollExtent -
-            scrollController.position.maxScrollExtent * 0.2);
+            scrollController.position.maxScrollExtent);
+        widget.onNextPage();
       }
     });
   }
@@ -42,7 +38,6 @@ class _CategorySliderState extends State<CategorySlider> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     if (widget.categories.isEmpty) {
       return Container(
         width: double.infinity,
@@ -74,7 +69,7 @@ class _CategorySliderState extends State<CategorySlider> {
               controller: scrollController,
               scrollDirection: Axis.horizontal,
               itemCount: widget.categories.length,
-              itemBuilder: (context, index) {
+              itemBuilder: (_, index) {
                 return _ProductPoster(category: widget.categories[index]);
               },
             ),
@@ -94,7 +89,7 @@ class _ProductPoster extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final providersAPI = Provider.of<WoocomerceProvider>(context);
+    // final providersAPI = Provider.of<WoocomerceProvider>(context);
     return Container(
       width: 150,
       height: 190,
