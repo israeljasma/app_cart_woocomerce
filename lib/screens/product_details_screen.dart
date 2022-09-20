@@ -24,7 +24,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
         title: const Text('cambiar'),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
+        padding: const EdgeInsets.only(right: 20, left: 20, top: 10),
         child: Stack(
           children: [
             Column(
@@ -63,7 +63,16 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [],
+                  children: [
+                    Text(''),
+                    Text(
+                      '${widget.product.price}',
+                      style: TextStyle(
+                          fontSize: 25,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 10),
                 Row(
@@ -71,7 +80,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   children: [
                     CustomStepper(
                       lowerLimit: 0,
-                      upperLimit: 20,
+                      upperLimit: widget.product.stockQuantity,
                       stepValue: 1,
                       iconsize: 22.0,
                       value: 0,
