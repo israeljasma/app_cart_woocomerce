@@ -11,55 +11,20 @@ class WoocomerceProvider extends ChangeNotifier {
 
   List<ProductModel> onDisplayProducts = [];
   List<Category> productsCategories = [];
+  int _productPage = 0;
   int _categoriesPage = 0;
+
   WoocomerceProvider() {
     print('WoocomerceProvider inicializado');
     getOnDisplayWoocomerce();
     getCategories();
   }
 
-  Future<String> _getJsonData(String endPoint, Map parameters2) async {
-    Map<String, dynamic> parameters = {
-      'consumer_secret': _consumerSecret,
-      'consumer_key': _consumerKey
-    };
-    // if (pageNumber != null) {
-    //   parameters.addAll({'page': pageNumber});
-    //   print('pageNumber');
-    // }
-
-    // if (pageSize != null) {
-    //   parameters.addAll({'per_page': pageSize});
-    //   print('pageSize');
-    // }
-
-    // if (strSearch != '') {
-    //   parameters.addAll({'search': strSearch});
-    //   // print('strSearch');
-    // }
-
-    // if (categoryId != null) {
-    //   parameters.addAll({'category': categoryId});
-    //   print(parameters);
-    //   print('categoryId');
-    //   print(categoryId);
-    // } else {
-    //   print('pum feo');
-    // }
-
-    // if (sortBy != null) {
-    //   parameters.addAll({'orderby': sortBy});
-    //   // print('sortBy');
-    // }
-
-    // if (sortOrder != null) {
-    //   parameters.addAll({'order': sortOrder});
-    //   // print('sortOrder');
-    // }
-
+  Future<String> _getJsonData(String endPoint, parameters) async {
     var url = Uri.https(_baseUrl, endPoint, parameters);
 
     final response = await http.get(url);
+
     return response.body;
   }
 
@@ -70,11 +35,15 @@ class WoocomerceProvider extends ChangeNotifier {
       String? categoryId,
       String? sortBy,
       String? sortOrder}) async {
+    _productPage++;
     print('getOnDisplayWoocomerce');
     Map<String, dynamic> parameters = {
       'consumer_secret': _consumerSecret,
       'consumer_key': _consumerKey
     };
+
+    parameters.addAll({'page': '$_productPage'});
+
     if (pageNumber != null) {
       parameters.addAll({'page': pageNumber});
     }
@@ -103,7 +72,10 @@ class WoocomerceProvider extends ChangeNotifier {
         .map((data) => ProductModel.fromJson(data))
         .toList();
 
-    onDisplayProducts = products;
+    onDisplayProducts = [...onDisplayProducts, ...products];
+    print(onDisplayProducts.length);
+    print('pageProduct: $_productPage');
+
     notifyListeners();
   }
 
@@ -113,13 +85,16 @@ class WoocomerceProvider extends ChangeNotifier {
       'consumer_secret': _consumerSecret,
       'consumer_key': _consumerKey
     };
+
+    parameters.addAll({'page': '$_categoriesPage'});
     final jsonData =
         await _getJsonData('/wp-json/wc/v3/products/categories', parameters);
     List<Category> categories = (json.decode(jsonData) as List)
         .map((data) => Category.fromJson(data))
         .toList();
 
-    productsCategories = categories;
+    productsCategories = [...productsCategories, ...categories];
+
     notifyListeners();
   }
 }
