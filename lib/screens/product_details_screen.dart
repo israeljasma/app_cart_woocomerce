@@ -75,7 +75,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         children: [
                           const Text(''),
                           Text(
-                            widget.product.regularPrice,
+                            '\$${NumberFormat().thousandFormat(int.parse(widget.product.regularPrice))}',
                             style: const TextStyle(
                               fontSize: 20,
                               decorationColor: Colors.red,
@@ -92,7 +92,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         children: [
                           const Text(''),
                           Text(
-                            widget.product.price,
+                            '\$${NumberFormat().thousandFormat(int.parse(widget.product.price))}',
                             style: const TextStyle(
                               fontSize: 25,
                               color: Colors.black,
@@ -108,7 +108,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         children: [
                           const Text(''),
                           Text(
-                            widget.product.price,
+                            '\$${NumberFormat().thousandFormat(int.parse(widget.product.price))}',
                             style: const TextStyle(
                               fontSize: 25,
                               color: Colors.black,
