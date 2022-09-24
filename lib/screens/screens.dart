@@ -1,6 +1,5 @@
 export 'package:app_cart_woocomerce/screens/account_screen.dart';
 export 'package:app_cart_woocomerce/screens/bag_screen.dart';
-export 'package:app_cart_woocomerce/screens/base_screen.dart';
 export 'package:app_cart_woocomerce/screens/cart/cart_screen.dart';
 export 'package:app_cart_woocomerce/screens/favourite_screen.dart';
 export 'package:app_cart_woocomerce/screens/home_screen.dart';
