@@ -110,10 +110,18 @@ class ChekOurCard extends StatelessWidget {
                 SizedBox(
                   width: getProportionateScreenWidth(190),
                   child: TextButton(
-                    onPressed: () {
-                      dataCart.deleteProduct(0);
-                    },
-                    child: const Text('Pagar'),
+                    onPressed: () {},
+                    style: TextButton.styleFrom(
+                      backgroundColor: Colors.redAccent,
+                      padding: const EdgeInsets.all(15),
+                      shape: const StadiumBorder(),
+                    ),
+                    child: const Text(
+                      'Pagar',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                 )
               ],
