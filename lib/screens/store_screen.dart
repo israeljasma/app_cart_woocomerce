@@ -19,7 +19,7 @@ class _StoreScreenState extends State<StoreScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            ProductSlider(products: providersAPI.onDisplayProducts),
+            ProductSlider(products: providersAPI.latestProducts),
             CategorySlider(
               categories: providersAPI.productsCategories,
               onNextPage: () => providersAPI.getCategories(),

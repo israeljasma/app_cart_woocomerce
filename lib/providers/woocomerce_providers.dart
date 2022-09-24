@@ -10,6 +10,7 @@ class WoocomerceProvider extends ChangeNotifier {
   final String _baseUrl = 'hostingincreible.cl';
 
   List<ProductModel> onDisplayProducts = [];
+  List<ProductModel> latestProducts = [];
   List<Category> productsCategories = [];
   int _productPage = 0;
   int _categoriesPage = 0;
@@ -18,6 +19,7 @@ class WoocomerceProvider extends ChangeNotifier {
     print('WoocomerceProvider inicializado');
     getOnDisplayWoocomerce();
     getCategories();
+    getLatestProducts();
   }
 
   Future<String> _getJsonData(String endPoint, parameters) async {
@@ -95,6 +97,20 @@ class WoocomerceProvider extends ChangeNotifier {
 
     productsCategories = [...productsCategories, ...categories];
 
+    notifyListeners();
+  }
+
+  getLatestProducts() async {
+    Map<String, dynamic> parameters = {
+      'consumer_secret': _consumerSecret,
+      'consumer_key': _consumerKey,
+    };
+
+    final jsonData = await _getJsonData('/wp-json/wc/v3/products', parameters);
+    List<ProductModel> products = (json.decode(jsonData) as List)
+        .map((data) => ProductModel.fromJson(data))
+        .toList();
+    latestProducts = products;
     notifyListeners();
   }
 }
