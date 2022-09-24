@@ -1,16 +1,58 @@
 import 'package:app_cart_woocomerce/models/models.dart';
+import 'package:app_cart_woocomerce/providers/woocomerce_providers.dart';
+import 'package:app_cart_woocomerce/screens/screens.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class ProductScreen extends StatelessWidget {
+class ProductScreen extends StatefulWidget {
   const ProductScreen({
     Key? key,
     required this.products,
+    required this.onNextPage,
   }) : super(key: key);
 
   final List<ProductModel> products;
+  final Function onNextPage;
+
+  @override
+  State<ProductScreen> createState() => _ProductScreenState();
+}
+
+class _ProductScreenState extends State<ProductScreen> {
+  final ScrollController scrollController = ScrollController();
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    scrollController.addListener(() {
+      if (scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent - 400) {
+        // print(scrollController.position.pixels);
+        print('llamda');
+        fecthData();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  Future fecthData() async {
+    if (isLoading) return;
+    isLoading = true;
+    setState(() {});
+    widget.onNextPage();
+    await Future.delayed(const Duration(seconds: 1));
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
+    final testProducts = Provider.of<WoocomerceProvider>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('App Cart Woocomerce'),
@@ -26,13 +68,33 @@ class ProductScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            _productFilters(),
+            Row(
+              children: [
+                Flexible(
+                  child: TextField(
+                    decoration: InputDecoration(
+                      prefixIcon: const Icon(Icons.search),
+                      hintText: 'Buscar',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(15.0),
+                        borderSide: BorderSide.none,
+                      ),
+                      fillColor: Colors.black12,
+                      filled: true,
+                    ),
+                  ),
+                )
+              ],
+            ),
             const SizedBox(height: 5),
             Expanded(
               child: GridView.builder(
+                controller: scrollController,
                 scrollDirection: Axis.vertical,
-                itemCount: products.length,
+                itemCount: testProducts.onDisplayProducts.length,
                 itemBuilder: (context, index) {
-                  final product = products[index];
+                  final product = testProducts.onDisplayProducts[index];
                   return _ProductPoster(
                     product: product,
                   );
@@ -65,12 +127,12 @@ class _ProductPoster extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 10),
       child: GestureDetector(
         onTap: () {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => ProductDetailsScreen(product: product),
-          //   ),
-          // );
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProductDetailsScreen(product: product),
+            ),
+          );
         }
         // => Navigator.pushNamed(context, 'productDetails',
         //     arguments: 'product-instance')
@@ -110,6 +172,50 @@ class _ProductPoster extends StatelessWidget {
       ),
     );
   }
+}
+
+Widget _productFilters() {
+  return Container(
+    height: 51,
+    margin: const EdgeInsets.fromLTRB(10, 10, 10, 5),
+    child: Row(
+      children: [
+        Flexible(
+          child: TextField(
+            decoration: InputDecoration(
+              prefixIcon: const Icon(Icons.search),
+              hintText: 'Buscar',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15.0),
+                borderSide: BorderSide.none,
+              ),
+              fillColor: Colors.black12,
+              filled: true,
+            ),
+          ),
+        ),
+        const SizedBox(width: 15),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.black12,
+            borderRadius: BorderRadius.circular(9),
+          ),
+          // child: PopupMenuButton(
+          //   onSelected: (value) {},
+          //   itemBuilder: (BuildContext context) {
+          //     return _sortByOptions.map((item){
+          //       return PopupMenuItem(
+          //         value: item,
+          //         child: Container(
+          //           child: Text(item.text),
+          //         ),),
+          //     })
+          //   },
+          // ),
+        ),
+      ],
+    ),
+  );
 }
 // import 'package:flutter/material.dart';
 
