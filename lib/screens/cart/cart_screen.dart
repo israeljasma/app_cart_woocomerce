@@ -1,6 +1,7 @@
 import 'package:app_cart_woocomerce/providers/cart_provider.dart';
 import 'package:app_cart_woocomerce/providers/woocomerce_providers.dart';
 import 'package:app_cart_woocomerce/screens/cart/components/body.dart';
+import 'package:app_cart_woocomerce/utils/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -97,11 +98,12 @@ class ChekOurCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                const Text.rich(
+                Text.rich(
                   TextSpan(text: 'Total:\n', children: [
                     TextSpan(
-                      text: '\$337.15 ',
-                      style: TextStyle(fontSize: 15, color: Colors.black),
+                      text:
+                          '\$${NumberFormat().thousandFormat(dataCart.price)}',
+                      style: const TextStyle(fontSize: 15, color: Colors.black),
                     ),
                   ]),
                 ),
