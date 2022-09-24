@@ -1,6 +1,6 @@
+import 'package:app_cart_woocomerce/providers/cart_provider.dart';
 import 'package:app_cart_woocomerce/providers/woocomerce_providers.dart';
 import 'package:app_cart_woocomerce/routes/app_routes.dart';
-// import 'package:app_cart_woocomerce/screens/screens.dart';
 import 'package:app_cart_woocomerce/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +14,9 @@ class AppState extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => WoocomerceProvider(), lazy: false)
+        ChangeNotifierProvider(
+            create: (_) => WoocomerceProvider(), lazy: false),
+        ChangeNotifierProvider(create: (_) => CartProvider(), lazy: false)
       ],
       child: MyApp(),
     );
