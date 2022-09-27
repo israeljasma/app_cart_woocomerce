@@ -9,6 +9,18 @@ class CartProvider extends ChangeNotifier {
     print('CartProvider inicializado');
   }
 
+  countProducts() {
+    if (cart.isEmpty) {
+      return cart.length;
+    } else {
+      int count = 0;
+      for (var product in cart) {
+        count = count + product.numOfItems;
+      }
+      return count;
+    }
+  }
+
   addProduct(Cart product) {
     cart.add(product);
     priceAdd(int.parse(product.product.price) * product.numOfItems);
