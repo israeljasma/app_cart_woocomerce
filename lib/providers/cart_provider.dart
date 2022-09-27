@@ -11,14 +11,14 @@ class CartProvider extends ChangeNotifier {
 
   addProduct(Cart product) {
     cart.add(product);
-    priceAdd(int.parse(product.product.price));
+    priceAdd(int.parse(product.product.price) * product.numOfItems);
     notifyListeners();
   }
 
   deleteProduct(int id) {
-    var actualPrice = cart[id].product.price;
+    var actualPrice = int.parse(cart[id].product.price) * cart[id].numOfItems;
     cart.removeAt(id);
-    priceLess(int.parse(actualPrice));
+    priceLess(actualPrice);
     notifyListeners();
   }
 
