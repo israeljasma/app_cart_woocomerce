@@ -1,13 +1,17 @@
 import 'package:app_cart_woocomerce/models/models.dart';
+import 'package:app_cart_woocomerce/providers/cart_provider.dart';
 import 'package:app_cart_woocomerce/utils/utils.dart';
 import 'package:app_cart_woocomerce/widgets/related_product_slider.dart';
+import 'package:app_cart_woocomerce/widgets/widgets.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final ProductModel product;
+  int countProducts = 0;
 
-  const ProductDetailsScreen({
+  ProductDetailsScreen({
     Key? key,
     required this.product,
   }) : super(key: key);
@@ -122,13 +126,21 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       upperLimit: widget.product.stockQuantity,
                       stepValue: 1,
                       iconsize: 22.0,
-                      value: 0,
+                      value: widget.countProducts,
                       onChaned: (value) {
                         print(value);
+                        widget.countProducts = value;
                       },
                     ),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        if (widget.countProducts != 0 ||
+                            widget.countProducts > 0) {
+                          dataCart.addProduct(Cart(
+                              product: widget.product,
+                              numOfItems: widget.countProducts));
+                        }
+                      },
                       style: TextButton.styleFrom(
                         backgroundColor: Colors.redAccent,
                         padding: const EdgeInsets.all(15),
