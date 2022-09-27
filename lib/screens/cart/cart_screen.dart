@@ -20,8 +20,7 @@ class CartScreen extends StatelessWidget {
   }
 
   AppBar builtAppBar(BuildContext context) {
-    final providersAPI = Provider.of<CartProvider>(context);
-    var cart = context.watch<WoocomerceProvider>();
+    final cartProvider = Provider.of<CartProvider>(context);
     return AppBar(
       backgroundColor: Colors.white,
       iconTheme: const IconThemeData(color: Colors.black),
@@ -29,7 +28,7 @@ class CartScreen extends StatelessWidget {
       title: Column(
         children: [
           const Text('Tu carrito', style: TextStyle(color: Colors.black)),
-          Text('${providersAPI.cart.length} productos',
+          Text('${cartProvider.countProducts()} productos',
               style: Theme.of(context).textTheme.caption),
         ],
       ),
