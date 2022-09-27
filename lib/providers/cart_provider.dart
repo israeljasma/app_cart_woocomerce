@@ -22,8 +22,22 @@ class CartProvider extends ChangeNotifier {
   }
 
   addProduct(Cart product) {
-    cart.add(product);
-    priceAdd(int.parse(product.product.price) * product.numOfItems);
+    if (cart.isEmpty) {
+      cart.add(product);
+      priceAdd(int.parse(product.product.price) * product.numOfItems);
+    } else {
+      for (var item in cart) {
+        if (product.product.id != item.product.id) {
+          cart.add(product);
+          priceAdd(int.parse(product.product.price) * product.numOfItems);
+          break;
+        } else {
+          item.numOfItems = product.numOfItems + item.numOfItems;
+          priceAdd(int.parse(product.product.price) * product.numOfItems);
+          break;
+        }
+      }
+    }
     notifyListeners();
   }
 
