@@ -1,4 +1,5 @@
 import 'package:app_cart_woocomerce/models/cart.dart';
+import 'package:app_cart_woocomerce/utils/utils.dart';
 import 'package:flutter/material.dart';
 
 class CartItemCard extends StatefulWidget {
@@ -51,18 +52,35 @@ class _CartItemCardState extends State<CartItemCard> {
               maxLines: 2,
             ),
             const SizedBox(height: 10),
-            Text.rich(
-              TextSpan(
-                text: '\$${widget.cart.product.price}',
-                style: const TextStyle(color: Colors.orange),
-                children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text.rich(
                   TextSpan(
-                    text: ' x${widget.cart.numOfItems}',
-                    style: const TextStyle(color: Colors.black),
+                    text: '\$${widget.cart.product.price}',
+                    style: const TextStyle(color: Colors.orange, fontSize: 20),
+                    children: [
+                      // TextSpan(
+                      //   text: ' x${widget.cart.numOfItems}',
+                      //   style: const TextStyle(color: Colors.black),
+                      // ),
+                    ],
                   ),
-                ],
-              ),
-            )
+                ),
+                const SizedBox(width: 15),
+                CustomStepper(
+                  lowerLimit: 0,
+                  upperLimit: widget.cart.product.stockQuantity,
+                  stepValue: 1,
+                  iconsize: 22.0,
+                  value: widget.cart.numOfItems,
+                  onChaned: (value) {
+                    print(value);
+                    // countProducts = value;
+                  },
+                ),
+              ],
+            ),
           ],
         ),
       ],
