@@ -1,5 +1,6 @@
 import 'package:app_cart_woocomerce/screens/screens.dart';
 import 'package:app_cart_woocomerce/theme/app_theme.dart';
+import 'package:app_cart_woocomerce/widgets/app_bar_design.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,18 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('App Cart Woocomerce'),
-        actions: <Widget>[
-          IconButton(
-            onPressed: () {
-              Navigator.pushNamed(context, '/cart',
-                  arguments: 'movie-instance');
-            },
-            icon: const Icon(Icons.shopping_cart),
-          ),
-        ],
-      ),
+      appBar: AppBarDesign(),
       body: IndexedStack(
         index: currentIndex,
         children: screens,

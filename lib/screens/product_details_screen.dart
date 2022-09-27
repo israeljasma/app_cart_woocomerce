@@ -19,16 +19,9 @@ class ProductDetailsScreen extends StatefulWidget {
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   @override
   Widget build(BuildContext context) {
+    final dataCart = Provider.of<CartProvider>(context);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('App Cart Woocomerce'),
-        actions: <Widget>[
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.shopping_cart),
-          ),
-        ],
-      ),
+      appBar: const AppBarDesign(),
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(right: 20, left: 20, top: 10),
         child: Stack(
