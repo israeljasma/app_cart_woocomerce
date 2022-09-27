@@ -16,7 +16,7 @@ class AppBarDesign extends StatelessWidget implements PreferredSizeWidget {
         Badge(
           showBadge: cartProvider.cart.isEmpty ? false : true,
           badgeContent: Text(
-            cartProvider.cart.length.toString(),
+            cartProvider.countProducts().toString(),
             style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
