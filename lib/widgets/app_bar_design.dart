@@ -11,7 +11,8 @@ class AppBarDesign extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     final cartProvider = Provider.of<CartProvider>(context);
     return AppBar(
-      title: const Text('App Cart Woocomerce'),
+      backgroundColor: Color.fromRGBO(128, 96, 76, 1),
+      title: const Text('Jabon Organicos App'),
       actions: <Widget>[
         Badge(
           showBadge: cartProvider.cart.isEmpty ? false : true,
@@ -20,7 +21,7 @@ class AppBarDesign extends StatelessWidget implements PreferredSizeWidget {
             style: const TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
-              fontSize: 10,
+              fontSize: 13,
             ),
           ),
           position: BadgePosition.topEnd(end: 3, top: 3),
