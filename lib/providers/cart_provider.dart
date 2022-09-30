@@ -26,15 +26,28 @@ class CartProvider extends ChangeNotifier {
       cart.add(product);
       priceAdd(int.parse(product.product.price) * product.numOfItems);
     } else {
+      bool flag = false;
+      int i = -1;
       for (var item in cart) {
-        if (product.product.id != item.product.id) {
-          cart.add(product);
+        i++;
+        if (product.product.id == item.product.id) {
+          flag = true;
+        }
+      }
+      if (!flag) {
+        cart.add(product);
+        priceAdd(int.parse(product.product.price) * product.numOfItems);
+      } else {
+        if (cart[i].numOfItems + product.numOfItems <=
+            product.product.stockQuantity) {
+          cart[i].numOfItems = product.numOfItems + cart[i].numOfItems;
           priceAdd(int.parse(product.product.price) * product.numOfItems);
-          break;
-        } else {
-          item.numOfItems = product.numOfItems + item.numOfItems;
-          priceAdd(int.parse(product.product.price) * product.numOfItems);
-          break;
+        } else if (cart[i].numOfItems + product.numOfItems >
+                product.product.stockQuantity &&
+            cart[i].numOfItems < product.product.stockQuantity) {
+          int maxProduct = product.product.stockQuantity - product.numOfItems;
+          cart[i].numOfItems = maxProduct + cart[i].numOfItems;
+          priceAdd(int.parse(product.product.price) * maxProduct);
         }
       }
     }
