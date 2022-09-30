@@ -46,7 +46,7 @@ class CartProvider extends ChangeNotifier {
                 product.product.stockQuantity &&
             cart[i].numOfItems < product.product.stockQuantity) {
           int maxProduct = product.product.stockQuantity - product.numOfItems;
-          cart[i].numOfItems = maxProduct + cart[i].numOfItems;
+          cart[i].numOfItems = product.product.stockQuantity;
           priceAdd(int.parse(product.product.price) * maxProduct);
         }
       }
