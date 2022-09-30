@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final ProductModel product;
-  int countProducts = 0;
+  int countProducts = 1;
 
   ProductDetailsScreen({
     Key? key,
