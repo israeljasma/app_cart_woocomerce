@@ -8,19 +8,19 @@ class StoreScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final providersAPI = Provider.of<WoocomerceProvider>(context);
+    final woocomerceProvider = Provider.of<WoocomerceProvider>(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ProductSlider(
-              products: providersAPI.latestProducts,
-              providersWoocomerceAPI: providersAPI,
+              products: woocomerceProvider.latestProducts,
+              providersWoocomerceAPI: woocomerceProvider,
             ),
             Categories(
-              categories: providersAPI.productsCategories,
-              onNextPage: () => providersAPI.getCategories(),
+              categories: woocomerceProvider.productsCategories,
+              onNextPage: () => woocomerceProvider.getCategories(),
             ),
           ],
         ),
