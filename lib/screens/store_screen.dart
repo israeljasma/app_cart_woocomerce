@@ -3,14 +3,9 @@ import 'package:app_cart_woocomerce/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class StoreScreen extends StatefulWidget {
+class StoreScreen extends StatelessWidget {
   const StoreScreen({Key? key}) : super(key: key);
 
-  @override
-  State<StoreScreen> createState() => _StoreScreenState();
-}
-
-class _StoreScreenState extends State<StoreScreen> {
   @override
   Widget build(BuildContext context) {
     final providersAPI = Provider.of<WoocomerceProvider>(context);
@@ -19,8 +14,11 @@ class _StoreScreenState extends State<StoreScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            ProductSlider(products: providersAPI.latestProducts),
-            CategorySlider(
+            ProductSlider(
+              products: providersAPI.latestProducts,
+              providersWoocomerceAPI: providersAPI,
+            ),
+            Categories(
               categories: providersAPI.productsCategories,
               onNextPage: () => providersAPI.getCategories(),
             ),
