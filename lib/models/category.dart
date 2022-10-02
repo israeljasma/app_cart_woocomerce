@@ -4,13 +4,13 @@ class Category {
   Category({
     required this.id,
     required this.name,
-    required this.description,
+    this.description,
     this.image,
   });
 
   int id;
   String name;
-  String description;
+  String? description;
   ImageModel? image;
 
   factory Category.fromJson(Map<String, dynamic> json) {

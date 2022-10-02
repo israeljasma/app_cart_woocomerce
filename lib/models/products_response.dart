@@ -15,6 +15,7 @@ class ProductModel {
   String regularPrice;
   String salePrice;
   int stockQuantity;
+  List<Category> categories;
   List<ImageModel> images;
   List<int> relatedIds;
 
@@ -27,6 +28,7 @@ class ProductModel {
     required this.regularPrice,
     required this.salePrice,
     required this.stockQuantity,
+    required this.categories,
     required this.images,
     required this.relatedIds,
   });
@@ -41,6 +43,8 @@ class ProductModel {
       regularPrice: json['regular_price'],
       salePrice: json['sale_price'],
       stockQuantity: json['stock_quantity'],
+      categories: List<Category>.from(
+          json["categories"].map((x) => Category.fromJson(x))),
       images: List<ImageModel>.from(
           json["images"].map((x) => ImageModel.fromMap(x))),
       relatedIds: json['related_ids'].cast<int>(),
