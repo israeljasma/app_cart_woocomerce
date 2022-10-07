@@ -1,25 +1,32 @@
 import 'dart:convert';
 
 import 'package:app_cart_woocomerce/models/models.dart';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class WoocomerceProvider extends ChangeNotifier {
   final String _consumerKey = 'ck_79906660122a2edb046a16b42b58a0070ba8b2ce';
   final String _consumerSecret = 'cs_f74a6a3c286bd2ec473d22640368e3122a440423';
-  final String _baseUrl = 'hostingincreible.cl';
+  final String _baseUrl = 'creacion.agencia-web.com';
 
   List<ProductModel> onDisplayProducts = [];
   List<ProductModel> latestProducts = [];
+  List<ProductModel> relatedProducts = [];
   List<Category> productsCategories = [];
+
   int _productPage = 0;
   int _categoriesPage = 0;
+  late int row = 10;
+  late int col;
+  late var matrixCategories;
 
   WoocomerceProvider() {
     print('WoocomerceProvider inicializado');
-    getOnDisplayWoocomerce();
     getCategories();
     getLatestProducts();
+    getMatrixCategories();
+    getProducts();
   }
 
   Future<String> _getJsonData(String endPoint, parameters) async {
@@ -30,7 +37,7 @@ class WoocomerceProvider extends ChangeNotifier {
     return response.body;
   }
 
-  getOnDisplayWoocomerce(
+  getProducts(
       {int? pageNumber,
       int? pageSize,
       String? strSearch,
@@ -45,10 +52,6 @@ class WoocomerceProvider extends ChangeNotifier {
     };
 
     parameters.addAll({'page': '$_productPage'});
-
-    if (pageNumber != null) {
-      parameters.addAll({'page': pageNumber});
-    }
 
     if (pageSize != null) {
       parameters.addAll({'per_page': pageSize});
@@ -69,14 +72,13 @@ class WoocomerceProvider extends ChangeNotifier {
     if (sortOrder != null) {
       parameters.addAll({'order': sortOrder});
     }
+
     final jsonData = await _getJsonData('/wp-json/wc/v3/products', parameters);
     List<ProductModel> products = (json.decode(jsonData) as List)
         .map((data) => ProductModel.fromJson(data))
         .toList();
 
     onDisplayProducts = [...onDisplayProducts, ...products];
-    print(onDisplayProducts.length);
-    print('pageProduct: $_productPage');
 
     notifyListeners();
   }
@@ -112,5 +114,65 @@ class WoocomerceProvider extends ChangeNotifier {
         .toList();
     latestProducts = products;
     notifyListeners();
+  }
+
+  geRelatedProducts(List<Category> categories, int productExclude) async {
+    print(categories.first.id);
+    categories.shuffle();
+    print(categories.first.id);
+    Map<String, dynamic> parameters = {
+      'consumer_secret': _consumerSecret,
+      'consumer_key': _consumerKey,
+    };
+
+    // if (categoryId != null) {
+    //   parameters.addAll({'category': categoryId});
+    // }
+
+    parameters.addAll({'category': '${categories.first.id}'});
+
+    final jsonData = await _getJsonData('/wp-json/wc/v3/products', parameters);
+    List<ProductModel> products = (json.decode(jsonData) as List)
+        .map((data) => ProductModel.fromJson(data))
+        .toList();
+
+    products.shuffle();
+    products.removeRange(2, products.length);
+    relatedProducts = products;
+    print('largo prodcutos: ${products.length}');
+    notifyListeners();
+  }
+
+  getMatrixCategories() async {
+    print('getMatrixCategories');
+    Map<String, dynamic> parameters = {
+      'consumer_secret': _consumerSecret,
+      'consumer_key': _consumerKey,
+    };
+
+    parameters.addAll({'per_page': '100'});
+
+    final jsonData =
+        await _getJsonData('/wp-json/wc/v3/products/categories', parameters);
+
+    List<Category> categories = (json.decode(jsonData) as List)
+        .map((data) => Category.fromJson(data))
+        .toList();
+
+    print('categorias ${categories.length}');
+    col = categories.length;
+
+    matrixCategories = List.generate(
+        col, (i) => List.filled(row, i + 1, growable: false),
+        growable: false);
+
+    // matrixCategories[0].add(1);
+    // matrixCategories[0].add(1);
+    // matrixCategories[0].add(1);
+    // matrixCategories[0].add(1);
+
+    matrixCategories;
+
+    print(matrixCategories[4][7]);
   }
 }
