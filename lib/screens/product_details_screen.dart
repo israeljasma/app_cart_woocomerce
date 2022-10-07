@@ -9,11 +9,13 @@ import 'package:provider/provider.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
   final ProductModel product;
-  int countProducts = 1;
+  List<ProductModel> relatedProduct;
+  var countProducts = 1;
 
   ProductDetailsScreen({
     Key? key,
     required this.product,
+    required this.relatedProduct,
   }) : super(key: key);
 
   @override
@@ -163,7 +165,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                 ),
                 const Divider(),
                 const SizedBox(height: 10),
-                // RelatedProductSlider(labelName: 'labelName', products: products)
+                RelatedProductSlider(products: widget.relatedProduct)
               ],
             ),
           ],
