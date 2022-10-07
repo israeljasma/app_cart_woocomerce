@@ -8,40 +8,68 @@ class Body extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final woocomerceProvider = Provider.of<WoocomerceProvider>(context);
     return Scaffold(
       body: Consumer<WoocomerceProvider>(
         builder: (context, wocomerceProvider, child) {
           if (wocomerceProvider.onDisplayProducts.isNotEmpty) {
             return _ProductList(
               products: wocomerceProvider.onDisplayProducts,
+              onNextPage: () => wocomerceProvider.getProducts(),
             );
           }
-          return Center(child: CircularProgressIndicator());
+          return const Center(child: CircularProgressIndicator());
         },
       ),
-      // FutureBuilder(
-      //   future: woocomerceProvider.getProducts2(),
-      //   builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-      //     if (snapshot.connectionState == ConnectionState.waiting) {
-      //       return const Center(
-      //         child: CircularProgressIndicator(),
-      //       );
-      //     } else {
-      //       return _ProductList(products: snapshot.data);
-      //     }
-      //   },
-      // ),
     );
   }
 }
 
-class _ProductList extends StatelessWidget {
+class _ProductList extends StatefulWidget {
   final List<ProductModel> products;
+  final Function onNextPage;
   const _ProductList({
     Key? key,
     required this.products,
+    required this.onNextPage,
   }) : super(key: key);
+
+  @override
+  State<_ProductList> createState() => _ProductListState();
+}
+
+class _ProductListState extends State<_ProductList> {
+  final ScrollController scrollController = ScrollController();
+  bool isLoading = false;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    scrollController.addListener(() {
+      if (scrollController.position.pixels >=
+          scrollController.position.maxScrollExtent - 100) {
+        fecthData();
+        // print(scrollController.position.pixels);
+      }
+    });
+    super.initState();
+  }
+
+  Future fecthData() async {
+    if (isLoading) return;
+    isLoading = true;
+    setState(() {});
+    widget.onNextPage();
+    await Future.delayed(const Duration(seconds: 3));
+    isLoading = false;
+    setState(() {});
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -53,49 +81,11 @@ class _ProductList extends StatelessWidget {
           const SizedBox(height: 5),
           Expanded(
             child: GridView.builder(
-              itemCount: products.length,
+              controller: scrollController,
+              itemCount: widget.products.length,
               itemBuilder: (context, index) {
-                return Container(
-                  width: 150,
-                  height: 220,
-                  margin: const EdgeInsets.symmetric(horizontal: 10),
-                  child: GestureDetector(
-                    onTap: () {},
-                    child: Column(
-                      children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: FadeInImage(
-                            placeholder:
-                                const AssetImage('assets/loading-image.png'),
-                            image:
-                                NetworkImage(products[index].images.first.src),
-                            width: 150,
-                            height: 190,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                        Flexible(
-                          child: Text(
-                            products[index].name,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                        Flexible(
-                          child: Text(
-                            products[index].price,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                return _ProductPoster(
+                  product: widget.products[index],
                 );
               },
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -105,6 +95,59 @@ class _ProductList extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _ProductPoster extends StatelessWidget {
+  const _ProductPoster({
+    Key? key,
+    required this.product,
+  }) : super(key: key);
+
+  final ProductModel product;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 150,
+      height: 220,
+      margin: const EdgeInsets.symmetric(horizontal: 10),
+      child: GestureDetector(
+        onTap: () {},
+        child: Column(
+          children: [
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: FadeInImage(
+                placeholder: const AssetImage('assets/loading-image.png'),
+                image: NetworkImage(product.images.first.src),
+                width: 150,
+                height: 190,
+                fit: BoxFit.cover,
+              ),
+            ),
+            const SizedBox(height: 5),
+            Flexible(
+              child: Text(
+                product.name,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+                textAlign: TextAlign.center,
+              ),
+            ),
+            const SizedBox(height: 5),
+            Flexible(
+              child: Text(
+                product.price,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -174,57 +217,57 @@ class _ProductList extends StatelessWidget {
 //   }
 // }
 
-class _ProductPoster extends StatelessWidget {
-  final ProductModel product;
-  const _ProductPoster({
-    Key? key,
-    required this.product,
-  }) : super(key: key);
+// class _ProductPoster extends StatelessWidget {
+//   final ProductModel product;
+//   const _ProductPoster({
+//     Key? key,
+//     required this.product,
+//   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 150,
-      height: 220,
-      margin: const EdgeInsets.symmetric(horizontal: 10),
-      child: GestureDetector(
-        onTap: () {},
-        child: Column(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: FadeInImage(
-                placeholder: const AssetImage('assets/loading-image.png'),
-                image: NetworkImage(product.images.first.src),
-                width: 150,
-                height: 190,
-                fit: BoxFit.cover,
-              ),
-            ),
-            const SizedBox(height: 5),
-            Flexible(
-              child: Text(
-                product.name,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-                textAlign: TextAlign.center,
-              ),
-            ),
-            const SizedBox(height: 5),
-            Flexible(
-              child: Text(
-                product.price,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       width: 150,
+//       height: 220,
+//       margin: const EdgeInsets.symmetric(horizontal: 10),
+//       child: GestureDetector(
+//         onTap: () {},
+//         child: Column(
+//           children: [
+//             ClipRRect(
+//               borderRadius: BorderRadius.circular(20),
+//               child: FadeInImage(
+//                 placeholder: const AssetImage('assets/loading-image.png'),
+//                 image: NetworkImage(product.images.first.src),
+//                 width: 150,
+//                 height: 190,
+//                 fit: BoxFit.cover,
+//               ),
+//             ),
+//             const SizedBox(height: 5),
+//             Flexible(
+//               child: Text(
+//                 product.name,
+//                 overflow: TextOverflow.ellipsis,
+//                 maxLines: 2,
+//                 textAlign: TextAlign.center,
+//               ),
+//             ),
+//             const SizedBox(height: 5),
+//             Flexible(
+//               child: Text(
+//                 product.price,
+//                 overflow: TextOverflow.ellipsis,
+//                 maxLines: 2,
+//                 textAlign: TextAlign.center,
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class _productFilters extends StatelessWidget {
   const _productFilters({
