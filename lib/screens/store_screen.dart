@@ -10,6 +10,7 @@ class StoreScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final woocomerceProvider = Provider.of<WoocomerceProvider>(context);
     return Scaffold(
+      appBar: const AppBarDesign(),
       body: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
