@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'App Cart Woocomerce',
-      initialRoute: '/home',
+      initialRoute: '/splash',
       routes: routes,
       theme: AppTheme.lighTheme,
     );
