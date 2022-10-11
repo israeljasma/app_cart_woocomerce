@@ -1,6 +1,5 @@
 import 'package:app_cart_woocomerce/screens/screens.dart';
 import 'package:app_cart_woocomerce/theme/app_theme.dart';
-import 'package:app_cart_woocomerce/widgets/app_bar_design.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
