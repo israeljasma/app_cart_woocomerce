@@ -48,6 +48,7 @@ class _ProductListState extends State<_ProductList> {
       if (scrollController.position.pixels >=
           scrollController.position.maxScrollExtent - 100) {
         fecthData();
+        setState(() {});
         // print(scrollController.position.pixels);
       }
     });
@@ -57,11 +58,9 @@ class _ProductListState extends State<_ProductList> {
   Future fecthData() async {
     if (isLoading) return;
     isLoading = true;
-    setState(() {});
     widget.onNextPage();
     await Future.delayed(const Duration(seconds: 3));
     isLoading = false;
-    setState(() {});
   }
 
   @override
