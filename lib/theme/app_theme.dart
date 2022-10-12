@@ -9,5 +9,6 @@ class AppTheme {
     appBarTheme: const AppBarTheme(
       color: primaryColor,
     ),
+    colorScheme: const ColorScheme.light(primary: primaryColor),
   );
 }
