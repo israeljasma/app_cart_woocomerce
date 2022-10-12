@@ -15,7 +15,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final screens = const [
     StoreScreen(),
     BagScreen(),
-    FavouriteScreen(),
+    SaleScreen(),
     AccountScreen(),
   ];
   @override
@@ -41,8 +41,8 @@ class _HomeScreenState extends State<HomeScreen> {
             backgroundColor: AppTheme.primaryColor,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.favorite_outline),
-            label: 'Favoritos',
+            icon: Icon(Icons.sell_outlined),
+            label: 'Ofertas',
             backgroundColor: AppTheme.primaryColor,
           ),
           BottomNavigationBarItem(
