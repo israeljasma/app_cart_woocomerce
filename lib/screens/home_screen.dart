@@ -14,7 +14,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int currentIndex = 0;
   final screens = const [
     StoreScreen(),
-    BagScreen(),
+    CategoryScreen(),
     SaleScreen(),
     AccountScreen(),
   ];
@@ -36,8 +36,8 @@ class _HomeScreenState extends State<HomeScreen> {
             backgroundColor: AppTheme.primaryColor,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_bag_outlined),
-            label: 'Canasta',
+            icon: Icon(Icons.store_outlined),
+            label: 'Categorias',
             backgroundColor: AppTheme.primaryColor,
           ),
           BottomNavigationBarItem(
