@@ -1,5 +1,6 @@
 import 'package:app_cart_woocomerce/models/models.dart';
 import 'package:app_cart_woocomerce/providers/providers.dart';
+import 'package:app_cart_woocomerce/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -109,12 +110,23 @@ class _ProductPoster extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final woocomerceProvider = Provider.of<WoocomerceProvider>(context);
     return Container(
       width: 150,
       height: 220,
       margin: const EdgeInsets.symmetric(horizontal: 10),
       child: GestureDetector(
-        onTap: () {},
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProductDetailsScreen(
+                product: product,
+                relatedProduct: woocomerceProvider.relatedProducts,
+              ),
+            ),
+          );
+        },
         child: Column(
           children: [
             ClipRRect(
