@@ -13,10 +13,13 @@ class WoocomerceProvider extends ChangeNotifier {
   List<ProductModel> onDisplayProducts = [];
   List<ProductModel> latestProducts = [];
   List<ProductModel> relatedProducts = [];
+  List<ProductModel> saleProducts = [];
   List<Category> productsCategories = [];
+  List<Category> categoriesList = [];
 
   int _productPage = 0;
   int _categoriesPage = 0;
+  int _categoriesListPage = 0;
   late int row = 10;
   late int col;
   late var matrixCategories;
@@ -27,6 +30,8 @@ class WoocomerceProvider extends ChangeNotifier {
     getLatestProducts();
     getMatrixCategories();
     getProducts();
+    getCategoriesList();
+    getSaleProducts();
   }
 
   Future<String> _getJsonData(String endPoint, parameters) async {
@@ -102,6 +107,25 @@ class WoocomerceProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  getCategoriesList() async {
+    _categoriesListPage++;
+    Map<String, dynamic> parameters = {
+      'consumer_secret': _consumerSecret,
+      'consumer_key': _consumerKey
+    };
+    print('getCategoriesList');
+    parameters.addAll({'page': '$_categoriesListPage'});
+    final jsonData =
+        await _getJsonData('/wp-json/wc/v3/products/categories', parameters);
+    List<Category> categories = (json.decode(jsonData) as List)
+        .map((data) => Category.fromJson(data))
+        .toList();
+
+    categoriesList = [...categoriesList, ...categories];
+
+    notifyListeners();
+  }
+
   getLatestProducts() async {
     Map<String, dynamic> parameters = {
       'consumer_secret': _consumerSecret,
@@ -140,6 +164,22 @@ class WoocomerceProvider extends ChangeNotifier {
     products.removeRange(2, products.length);
     relatedProducts = products;
     print('largo prodcutos: ${products.length}');
+    notifyListeners();
+  }
+
+  getSaleProducts() async {
+    Map<String, dynamic> parameters = {
+      'consumer_secret': _consumerSecret,
+      'consumer_key': _consumerKey,
+    };
+
+    parameters.addAll({'on_sale': 'true'});
+
+    final jsonData = await _getJsonData('/wp-json/wc/v3/products', parameters);
+    List<ProductModel> products = (json.decode(jsonData) as List)
+        .map((data) => ProductModel.fromJson(data))
+        .toList();
+    saleProducts = [...saleProducts, ...products];
     notifyListeners();
   }
 

@@ -1,3 +1,4 @@
+import 'package:app_cart_woocomerce/screens/sale/components/body.dart';
 import 'package:app_cart_woocomerce/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
@@ -8,9 +9,7 @@ class SaleScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       appBar: AppBarDesign(),
-      body: Center(
-        child: Text('SaleScreen'),
-      ),
+      body: Body(),
     );
   }
 }
