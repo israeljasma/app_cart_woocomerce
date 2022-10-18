@@ -1,4 +1,4 @@
-import 'package:app_cart_woocomerce/screens/login/components/custom_suffix_icon.dart';
+import 'package:app_cart_woocomerce/screens/components/custom_suffix_icon.dart';
 import 'package:app_cart_woocomerce/screens/login/components/form_error.dart';
 import 'package:app_cart_woocomerce/utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -41,9 +41,12 @@ class _LoginFormState extends State<LoginForm> {
               ),
               const Text('Recordame'),
               const Spacer(),
-              const Text(
-                'Has olvidado tu contraseña',
-                style: TextStyle(decoration: TextDecoration.underline),
+              GestureDetector(
+                onTap: () => Navigator.pushNamed(context, '/forgot_password'),
+                child: const Text(
+                  'Has olvidado tu contraseña',
+                  style: TextStyle(decoration: TextDecoration.underline),
+                ),
               )
             ],
           ),
@@ -54,6 +57,7 @@ class _LoginFormState extends State<LoginForm> {
             onPressed: () {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState?.save();
+                Navigator.popAndPushNamed(context, '/login_success');
               }
             },
             style: TextButton.styleFrom(
@@ -94,10 +98,12 @@ class _LoginFormState extends State<LoginForm> {
           setState(() {
             errors.add(passNullError);
           });
+          return "";
         } else if (value.length < 8 && !errors.contains(shortPassError)) {
           setState(() {
             errors.add(shortPassError);
           });
+          return "";
         }
         return null;
       },
@@ -108,6 +114,11 @@ class _LoginFormState extends State<LoginForm> {
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 42, vertical: 20),
         enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(28),
+          borderSide: const BorderSide(color: Colors.black26),
+          gapPadding: 10,
+        ),
+        errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(28),
           borderSide: const BorderSide(color: Colors.black26),
           gapPadding: 10,
@@ -146,11 +157,13 @@ class _LoginFormState extends State<LoginForm> {
           setState(() {
             errors.add(emailNullError);
           });
+          return "";
         } else if (!emailValidatorRegExp.hasMatch(value) &&
             !errors.contains(invalidEmailError)) {
           setState(() {
             errors.add(invalidEmailError);
           });
+          return "";
         }
         return null;
       },
@@ -161,6 +174,11 @@ class _LoginFormState extends State<LoginForm> {
         contentPadding:
             const EdgeInsets.symmetric(horizontal: 42, vertical: 20),
         enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(28),
+          borderSide: const BorderSide(color: Colors.black26),
+          gapPadding: 10,
+        ),
+        errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(28),
           borderSide: const BorderSide(color: Colors.black26),
           gapPadding: 10,

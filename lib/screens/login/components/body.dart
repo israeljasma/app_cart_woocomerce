@@ -1,6 +1,6 @@
 import 'package:app_cart_woocomerce/screens/login/components/login_form.dart';
+import 'package:app_cart_woocomerce/screens/login/components/no_account_text.dart';
 import 'package:flutter/material.dart';
-import 'package:app_cart_woocomerce/theme/app_theme.dart';
 
 class Body extends StatelessWidget {
   const Body({Key? key}) : super(key: key);
@@ -31,20 +31,7 @@ class Body extends StatelessWidget {
                 SizedBox(height: MediaQuery.of(context).size.height * 0.08),
                 const LoginForm(),
                 SizedBox(height: MediaQuery.of(context).size.height * 0.08),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Text(
-                      '¿No tienes cuenta? ',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                    Text(
-                      'Registrarse',
-                      style: TextStyle(
-                          fontSize: 16, color: Color.fromRGBO(128, 96, 76, 1)),
-                    ),
-                  ],
-                ),
+                const NoAccountText(),
               ],
             ),
           ),
