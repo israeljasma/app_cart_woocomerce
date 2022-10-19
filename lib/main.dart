@@ -30,7 +30,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'App Cart Woocomerce',
       initialRoute: '/splash',
-      routes: routes,
+      // routes: routes,
+      onGenerateRoute: AppRoutes.generateRoute,
       theme: AppTheme.lighTheme,
     );
   }
