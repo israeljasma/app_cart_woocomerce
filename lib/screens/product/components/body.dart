@@ -1,6 +1,6 @@
 import 'package:app_cart_woocomerce/models/models.dart';
 import 'package:app_cart_woocomerce/providers/providers.dart';
-import 'package:app_cart_woocomerce/screens/screens.dart';
+import 'package:app_cart_woocomerce/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -84,7 +84,7 @@ class _ProductListState extends State<_ProductList> {
               controller: scrollController,
               itemCount: widget.products.length,
               itemBuilder: (context, index) {
-                return _ProductPoster(
+                return ProductPoster(
                   product: widget.products[index],
                 );
               },
@@ -99,186 +99,6 @@ class _ProductListState extends State<_ProductList> {
     );
   }
 }
-
-class _ProductPoster extends StatelessWidget {
-  const _ProductPoster({
-    Key? key,
-    required this.product,
-  }) : super(key: key);
-
-  final ProductModel product;
-
-  @override
-  Widget build(BuildContext context) {
-    final woocomerceProvider = Provider.of<WoocomerceProvider>(context);
-    return Container(
-      width: 150,
-      height: 220,
-      margin: const EdgeInsets.symmetric(horizontal: 10),
-      child: GestureDetector(
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ProductDetailsScreen(
-                product: product,
-                relatedProduct: woocomerceProvider.relatedProducts,
-              ),
-            ),
-          );
-        },
-        child: Column(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: FadeInImage(
-                placeholder: const AssetImage('assets/loading-image.png'),
-                image: NetworkImage(product.images.first.src),
-                width: 150,
-                height: 190,
-                fit: BoxFit.cover,
-              ),
-            ),
-            const SizedBox(height: 5),
-            Flexible(
-              child: Text(
-                product.name,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-                textAlign: TextAlign.center,
-              ),
-            ),
-            const SizedBox(height: 5),
-            Flexible(
-              child: Text(
-                product.price,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-// class _ProductList extends StatefulWidget {
-//   List<ProductModel> products;
-//   _ProductList({
-//     Key? key,
-//     required this.products,
-//   }) : super(key: key);
-
-//   @override
-//   State<_ProductList> createState() => _ProductListState();
-// }
-
-// class _ProductListState extends State<_ProductList> {
-//   final ScrollController scrollController = ScrollController();
-//   bool isLoading = false;
-
-//   @override
-//   void initState() {
-//     // TODO: implement initState
-//     super.initState();
-
-//     scrollController.addListener(() {
-//       if (scrollController.position.pixels >=
-//           scrollController.position.maxScrollExtent - 300) {
-//         print(scrollController.position.pixels);
-//       }
-//     });
-//   }
-
-//   @override
-//   void dispose() {
-//     // TODO: implement dispose
-//     super.dispose();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       width: double.infinity,
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           _productFilters(),
-//           const SizedBox(height: 5),
-//           Expanded(
-//             child: GridView.builder(
-//               controller: scrollController,
-//               scrollDirection: Axis.vertical,
-//               itemCount: widget.products.length,
-//               itemBuilder: (context, index) {
-//                 final product = widget.products[index];
-//                 return _ProductPoster(product: product);
-//               },
-//               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-//                 crossAxisCount: 2,
-//                 mainAxisExtent: 250,
-//               ),
-//             ),
-//           )
-//         ],
-//       ),
-//     );
-//   }
-// }
-
-// class _ProductPoster extends StatelessWidget {
-//   final ProductModel product;
-//   const _ProductPoster({
-//     Key? key,
-//     required this.product,
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       width: 150,
-//       height: 220,
-//       margin: const EdgeInsets.symmetric(horizontal: 10),
-//       child: GestureDetector(
-//         onTap: () {},
-//         child: Column(
-//           children: [
-//             ClipRRect(
-//               borderRadius: BorderRadius.circular(20),
-//               child: FadeInImage(
-//                 placeholder: const AssetImage('assets/loading-image.png'),
-//                 image: NetworkImage(product.images.first.src),
-//                 width: 150,
-//                 height: 190,
-//                 fit: BoxFit.cover,
-//               ),
-//             ),
-//             const SizedBox(height: 5),
-//             Flexible(
-//               child: Text(
-//                 product.name,
-//                 overflow: TextOverflow.ellipsis,
-//                 maxLines: 2,
-//                 textAlign: TextAlign.center,
-//               ),
-//             ),
-//             const SizedBox(height: 5),
-//             Flexible(
-//               child: Text(
-//                 product.price,
-//                 overflow: TextOverflow.ellipsis,
-//                 maxLines: 2,
-//                 textAlign: TextAlign.center,
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
 
 class _productFilters extends StatelessWidget {
   const _productFilters({
