@@ -1,8 +1,4 @@
-import 'package:app_cart_woocomerce/screens/category_details/category_details_screen.dart';
-import 'package:app_cart_woocomerce/screens/forgot_password/forgot_password_screen.dart';
-import 'package:app_cart_woocomerce/screens/login_success/login_success_screen.dart';
 import 'package:app_cart_woocomerce/screens/screens.dart';
-import 'package:app_cart_woocomerce/screens/splash/splash_screen.dart';
 import 'package:flutter/material.dart';
 
 class AppRoutes {
@@ -36,7 +32,7 @@ class AppRoutes {
       case '/category_details':
         if (args is String) {
           return MaterialPageRoute(
-            builder: (_) => CategoryDetailsScreen(categoryID: args),
+            builder: (_) => CategoryProductsScreen(categoryID: args),
           );
         }
         return _errorRoute();

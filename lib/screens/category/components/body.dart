@@ -1,5 +1,5 @@
 import 'package:app_cart_woocomerce/providers/providers.dart';
-import 'package:app_cart_woocomerce/screens/category_details/category_details_screen.dart';
+import 'package:app_cart_woocomerce/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -19,7 +19,7 @@ class Body extends StatelessWidget {
                   Icons.arrow_forward_ios_outlined,
                 ),
                 onTap: () {
-                  Navigator.pushNamed(context, CategoryDetailsScreen.routeName,
+                  Navigator.pushNamed(context, CategoryProductsScreen.routeName,
                       arguments: (wocomerceProvider.categoriesList[index].id)
                           .toString());
                 },
