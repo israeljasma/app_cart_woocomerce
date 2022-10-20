@@ -1,4 +1,5 @@
 import 'package:app_cart_woocomerce/models/models.dart';
+import 'package:app_cart_woocomerce/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class RelatedProductSlider extends StatelessWidget {
@@ -45,75 +46,13 @@ class RelatedProductSlider extends StatelessWidget {
               itemCount: products.length,
               itemBuilder: (context, index) {
                 final product = products[index];
-                return _ProductPoster(
+                return ProductPoster(
                   product: product,
                 );
               },
             ),
           )
         ],
-      ),
-    );
-  }
-}
-
-class _ProductPoster extends StatelessWidget {
-  ProductModel product;
-  _ProductPoster({
-    Key? key,
-    required this.product,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 150,
-      height: 190,
-      margin: const EdgeInsets.symmetric(horizontal: 10),
-      child: GestureDetector(
-        onTap: () {
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => ProductDetailsScreen(product: product),
-          //   ),
-          // );
-        }
-        // => Navigator.pushNamed(context, 'productDetails',
-        //     arguments: 'product-instance')
-        ,
-        child: Column(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: FadeInImage(
-                placeholder: const AssetImage('assets/loading-image.png'),
-                image: NetworkImage(product.images.first.src),
-                width: 150,
-                height: 190,
-                fit: BoxFit.cover,
-              ),
-            ),
-            const SizedBox(height: 5),
-            Flexible(
-              child: Text(
-                product.name,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-                textAlign: TextAlign.center,
-              ),
-            ),
-            const SizedBox(height: 5),
-            Flexible(
-              child: Text(
-                product.price,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
-        ),
       ),
     );
   }
