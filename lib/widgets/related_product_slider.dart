@@ -25,34 +25,36 @@ class RelatedProductSlider extends StatelessWidget {
       );
     }
 
-    return Container(
-      width: double.infinity,
-      height: 270,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-            child: Text('Productos relacionados',
-                style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                )),
-          ),
-          const SizedBox(height: 5),
-          Expanded(
-            child: ListView.builder(
-              scrollDirection: Axis.horizontal,
-              itemCount: products.length,
-              itemBuilder: (context, index) {
-                final product = products[index];
-                return ProductPoster(
-                  product: product,
-                );
-              },
+    return SafeArea(
+      child: Container(
+        width: double.infinity,
+        height: 270,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+              child: Text('Productos relacionados',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                  )),
             ),
-          )
-        ],
+            const SizedBox(height: 5),
+            Expanded(
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: products.length,
+                itemBuilder: (context, index) {
+                  final product = products[index];
+                  return ProductPoster(
+                    product: product,
+                  );
+                },
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
