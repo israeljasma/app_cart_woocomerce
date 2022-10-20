@@ -1,4 +1,5 @@
 import 'package:app_cart_woocomerce/screens/components/custom_suffix_icon.dart';
+import 'package:app_cart_woocomerce/screens/components/default_button.dart';
 import 'package:app_cart_woocomerce/screens/login/components/form_error.dart';
 import 'package:app_cart_woocomerce/utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -53,24 +54,14 @@ class _LoginFormState extends State<LoginForm> {
           const SizedBox(height: 20),
           FormError(errors: errors),
           const SizedBox(height: 20),
-          TextButton(
-            onPressed: () {
+          DefaultButton(
+            text: 'Acceder',
+            press: () {
               if (_formKey.currentState!.validate()) {
                 _formKey.currentState?.save();
                 Navigator.popAndPushNamed(context, '/login_success');
               }
             },
-            style: TextButton.styleFrom(
-              backgroundColor: Colors.redAccent,
-              padding: const EdgeInsets.all(15),
-              shape: const StadiumBorder(),
-            ),
-            child: const Text(
-              'Acceder',
-              style: TextStyle(
-                color: Colors.white,
-              ),
-            ),
           ),
         ],
       ),
