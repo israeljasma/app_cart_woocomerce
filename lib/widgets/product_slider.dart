@@ -73,8 +73,9 @@ class ProductSlider extends StatelessWidget {
               itemCount: products.length,
               itemBuilder: (context, index) {
                 final product = products[index];
-                return _ProductPoster(
+                return ProductPoster(
                   product: product,
+                  // providersWoocomerceAPI: providersWoocomerceAPI,
                 );
               },
             ),
