@@ -29,7 +29,7 @@ class AppRoutes {
         return MaterialPageRoute(
           builder: (_) => const CartScreen(),
         );
-      case '/category_details':
+      case '/category_products':
         if (args is String) {
           return MaterialPageRoute(
             builder: (_) => CategoryProductsScreen(categoryID: args),
@@ -46,7 +46,7 @@ class AppRoutes {
       builder: (_) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('error  '),
+            title: const Text('error'),
           ),
           body: const Center(
             child: Text('ERROR'),
