@@ -22,6 +22,7 @@ class WoocomerceProvider extends ChangeNotifier {
   int _categoriesPage = 0;
   int _categoriesListPage = 0;
   int _categoryProductsListPage = 0;
+  int _saleProductsPage = 0;
   late int row = 10;
   late int col;
   late var matrixCategories;
@@ -170,12 +171,14 @@ class WoocomerceProvider extends ChangeNotifier {
   }
 
   getSaleProducts() async {
+    _saleProductsPage++;
     Map<String, dynamic> parameters = {
       'consumer_secret': _consumerSecret,
       'consumer_key': _consumerKey,
     };
 
     parameters.addAll({'on_sale': 'true'});
+    parameters.addAll({'page': '$_saleProductsPage'});
 
     final jsonData = await _getJsonData('/wp-json/wc/v3/products', parameters);
     List<ProductModel> products = (json.decode(jsonData) as List)
