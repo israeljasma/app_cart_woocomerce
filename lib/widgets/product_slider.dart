@@ -48,8 +48,7 @@ class ProductSlider extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                ProductScreen(products: products)));
+                            builder: (context) => const ProductScreen()));
                   },
                   style: TextButton.styleFrom(
                     shape: const StadiumBorder(),
