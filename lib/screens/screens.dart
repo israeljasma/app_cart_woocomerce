@@ -10,4 +10,4 @@ export 'package:app_cart_woocomerce/screens/product_details_screen.dart';
 export 'package:app_cart_woocomerce/screens/product/product_screen.dart';
 export 'package:app_cart_woocomerce/screens/sale/sale_screen.dart';
 export 'package:app_cart_woocomerce/screens/splash/splash_screen.dart';
-export 'package:app_cart_woocomerce/screens/store_screen.dart';
+export 'package:app_cart_woocomerce/screens/store/store_screen.dart';
