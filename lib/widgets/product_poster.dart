@@ -42,6 +42,9 @@ class ProductPoster extends StatelessWidget {
                   child: FadeInImage(
                     placeholder: const AssetImage('assets/loading-image.png'),
                     image: NetworkImage(product.images.first.src),
+                    imageErrorBuilder: (context, error, stackTrace) {
+                      return Image.asset('assets/loading-image.png');
+                    },
                     width: 150,
                     height: 190,
                     fit: BoxFit.cover,
