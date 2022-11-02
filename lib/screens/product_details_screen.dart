@@ -175,13 +175,20 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   }
 }
 
-class _ImageProductSlider extends StatelessWidget {
+class _ImageProductSlider extends StatefulWidget {
   final List<ImageModel> images;
-  final CarouselController _controller = CarouselController();
-  _ImageProductSlider({
+
+  const _ImageProductSlider({
     Key? key,
     required this.images,
   }) : super(key: key);
+
+  @override
+  State<_ImageProductSlider> createState() => _ImageProductSliderState();
+}
+
+class _ImageProductSliderState extends State<_ImageProductSlider> {
+  final CarouselController _controller = CarouselController();
 
   @override
   Widget build(BuildContext context) {
@@ -192,19 +199,22 @@ class _ImageProductSlider extends StatelessWidget {
         children: [
           Container(
             alignment: Alignment.center,
-            child: CarouselSlider.builder(
-              itemCount: images.length,
-              itemBuilder: (context, index, realIndex) => FadeInImage(
-                  placeholder: const AssetImage('assets/loading-image.png'),
-                  image: NetworkImage(images[index].src),
-                  fit: BoxFit.fill),
-              options: CarouselOptions(
-                autoPlay: false,
-                enlargeCenterPage: true,
-                viewportFraction: 1,
-                aspectRatio: 1.0,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: CarouselSlider.builder(
+                itemCount: widget.images.length,
+                itemBuilder: (context, index, realIndex) => FadeInImage(
+                    placeholder: const AssetImage('assets/loading-image.png'),
+                    image: NetworkImage(widget.images[index].src),
+                    fit: BoxFit.fill),
+                options: CarouselOptions(
+                  autoPlay: false,
+                  enlargeCenterPage: true,
+                  viewportFraction: 1,
+                  aspectRatio: 1.0,
+                ),
+                carouselController: _controller,
               ),
-              carouselController: _controller,
             ),
           ),
           Positioned(
