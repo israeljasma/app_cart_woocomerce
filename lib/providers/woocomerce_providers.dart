@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:app_cart_woocomerce/models/models.dart';
+import 'package:app_cart_woocomerce/utils/utils.dart';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -26,6 +28,12 @@ class WoocomerceProvider extends ChangeNotifier {
   late int row = 10;
   late int col;
   late var matrixCategories;
+
+  final debouncer = Debouncer(duration: const Duration(milliseconds: 500));
+  final StreamController<List<ProductModel>> _suggestionStreamController =
+      StreamController.broadcast();
+  Stream<List<ProductModel>> get suggestionStream =>
+      _suggestionStreamController.stream;
 
   WoocomerceProvider() {
     print('WoocomerceProvider inicializado');
@@ -242,5 +250,39 @@ class WoocomerceProvider extends ChangeNotifier {
   resetCategoryProductsListParameters() async {
     categoryProductsList.clear();
     _categoryProductsListPage = 0;
+  }
+
+  Future<List<ProductModel>> searchProducts(String search) async {
+    // _saleProductsPage++;
+    Map<String, dynamic> parameters = {
+      'consumer_secret': _consumerSecret,
+      'consumer_key': _consumerKey,
+    };
+
+    parameters.addAll({'search': search});
+    // parameters.addAll({'page': '$_saleProductsPage'});
+
+    final jsonData = await _getJsonData('/wp-json/wc/v3/products', parameters);
+    List<ProductModel> products = (json.decode(jsonData) as List)
+        .map((data) => ProductModel.fromJson(data))
+        .toList();
+    return products;
+  }
+
+  void getSuggestionByQuery(String searchTerm) {
+    debouncer.value = '';
+    debouncer.onValue = (value) async {
+      final results = await searchProducts(value);
+      _suggestionStreamController.add(results);
+    };
+
+    final timer = Timer.periodic(
+      const Duration(milliseconds: 200),
+      (_) {
+        debouncer.value = searchTerm;
+      },
+    );
+    Future.delayed(const Duration(milliseconds: 301))
+        .then((_) => timer.cancel());
   }
 }
