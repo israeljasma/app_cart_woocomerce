@@ -1,5 +1,6 @@
 import 'package:app_cart_woocomerce/models/products_response.dart';
 import 'package:app_cart_woocomerce/screens/screens.dart';
+import 'package:app_cart_woocomerce/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 
 class ProductSlider extends StatelessWidget {
@@ -100,12 +101,12 @@ class _ProductPoster extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 10),
       child: GestureDetector(
         onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ProductDetailsScreen(product: product),
-            ),
-          );
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => ProductDetailsScreen(product: product),
+          //   ),
+          // );
         }
         // => Navigator.pushNamed(context, 'productDetails',
         //     arguments: 'product-instance')

@@ -29,6 +29,10 @@ class WoocomerceProvider extends ChangeNotifier {
   late int col;
   late var matrixCategories;
 
+  String _strSearch = '';
+  String _orderBy = '';
+  String _sortOrder = '';
+
   final debouncer = Debouncer(duration: const Duration(milliseconds: 500));
   final StreamController<List<ProductModel>> _suggestionStreamController =
       StreamController.broadcast();
@@ -53,13 +57,13 @@ class WoocomerceProvider extends ChangeNotifier {
     return response.body;
   }
 
-  getProducts(
-      {int? pageNumber,
-      int? pageSize,
-      String? strSearch,
-      String? categoryId,
-      String? sortBy,
-      String? sortOrder}) async {
+  getProducts({
+    int? pageNumber,
+    int? pageSize,
+    String? strSearch,
+    String? categoryId,
+    String? sortBy,
+  }) async {
     _productPage++;
     print('getOnDisplayWoocomerce');
     Map<String, dynamic> parameters = {
@@ -73,20 +77,20 @@ class WoocomerceProvider extends ChangeNotifier {
       parameters.addAll({'per_page': pageSize});
     }
 
-    if (strSearch != '') {
-      parameters.addAll({'search': strSearch});
+    if (_strSearch != '') {
+      parameters.addAll({'search': _strSearch});
     }
 
     if (categoryId != null) {
       parameters.addAll({'category': categoryId});
     }
 
-    if (sortBy != null) {
-      parameters.addAll({'orderby': sortBy});
+    if (_orderBy != '') {
+      parameters.addAll({'orderby': _orderBy});
     }
 
-    if (sortOrder != null) {
-      parameters.addAll({'order': sortOrder});
+    if (_sortOrder != '') {
+      parameters.addAll({'order': _sortOrder});
     }
 
     final jsonData = await _getJsonData('/wp-json/wc/v3/products', parameters);
@@ -284,5 +288,52 @@ class WoocomerceProvider extends ChangeNotifier {
     );
     Future.delayed(const Duration(milliseconds: 301))
         .then((_) => timer.cancel());
+  }
+
+  void getSuggestionByQueryTest(String searchTerm) {
+    debouncer.value = '';
+    debouncer.onValue = (value) async {
+      _strSearch = searchTerm;
+      _productPage = 0;
+      onDisplayProducts = [];
+      getProducts();
+      // final results = await searchProducts(value);
+      // _suggestionStreamController.add(results);
+    };
+
+    final timer = Timer.periodic(
+      const Duration(milliseconds: 200),
+      (_) {
+        debouncer.value = searchTerm;
+      },
+    );
+    Future.delayed(const Duration(milliseconds: 301))
+        .then((_) => timer.cancel());
+  }
+
+  setProductsParameters({
+    String? strSearch,
+    String? orderBy,
+    String? sortOrder,
+  }) async {
+    if (strSearch != null) {
+      _strSearch = strSearch;
+    }
+    if (orderBy != null) {
+      _orderBy = orderBy;
+    }
+    if (sortOrder != null) {
+      _sortOrder = sortOrder;
+    }
+
+    notifyListeners();
+  }
+
+  resetProductsParameters() async {
+    _productPage = 0;
+    _strSearch = '';
+    _orderBy = '';
+    _sortOrder = '';
+    onDisplayProducts = [];
   }
 }

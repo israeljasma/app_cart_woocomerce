@@ -1,5 +1,6 @@
 import 'package:app_cart_woocomerce/models/models.dart';
 import 'package:app_cart_woocomerce/providers/providers.dart';
+import 'package:app_cart_woocomerce/utils/utils.dart';
 import 'package:app_cart_woocomerce/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -78,6 +79,7 @@ class _ProductListState extends State<_ProductList> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          _ProductFilters(),
           const SizedBox(height: 5),
           Expanded(
             child: GridView.builder(
@@ -100,13 +102,20 @@ class _ProductListState extends State<_ProductList> {
   }
 }
 
-class _productFilters extends StatelessWidget {
-  const _productFilters({
+class _ProductFilters extends StatelessWidget {
+  _ProductFilters({
     Key? key,
   }) : super(key: key);
+  final Map<SortBy, int> parameters = {
+    SortBy('popularity', 'Popular', 'asc'): 1,
+    SortBy('modified', 'Ultimos Agregados', 'asc'): 2,
+    SortBy('price', 'Precio: Alto a Bajo', 'desc'): 3,
+    SortBy('price', 'Precio: Bajo a Alto', 'asc'): 4,
+  };
 
   @override
   Widget build(BuildContext context) {
+    var _productList = Provider.of<WoocomerceProvider>(context, listen: false);
     return Container(
       height: 51,
       margin: const EdgeInsets.fromLTRB(10, 10, 10, 5),
@@ -124,6 +133,13 @@ class _productFilters extends StatelessWidget {
                 fillColor: Colors.black12,
                 filled: true,
               ),
+              onChanged: (value) {
+                _productList.getSuggestionByQueryTest(value);
+                // print(value);
+              },
+              // onSubmitted: (value) {
+              //   print(value);
+              // },
             ),
           ),
           const SizedBox(width: 15),
@@ -131,6 +147,35 @@ class _productFilters extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.black12,
               borderRadius: BorderRadius.circular(9),
+            ),
+            child: PopupMenuButton<SortBy>(
+              icon: const Icon(Icons.sort_outlined),
+              onSelected: (value) {
+                _productList.resetProductsParameters();
+                _productList.setProductsParameters(
+                    orderBy: value.orderBy, sortOrder: value.sortOrder);
+                _productList.getProducts();
+              },
+              itemBuilder: (BuildContext context) {
+                return <PopupMenuEntry<SortBy>>[
+                  PopupMenuItem<SortBy>(
+                    value: parameters.keys.elementAt(0),
+                    child: Text(parameters.keys.elementAt(0).text),
+                  ),
+                  PopupMenuItem<SortBy>(
+                    value: parameters.keys.elementAt(1),
+                    child: Text(parameters.keys.elementAt(1).text),
+                  ),
+                  PopupMenuItem<SortBy>(
+                    value: parameters.keys.elementAt(2),
+                    child: Text(parameters.keys.elementAt(2).text),
+                  ),
+                  PopupMenuItem<SortBy>(
+                    value: parameters.keys.elementAt(3),
+                    child: Text(parameters.keys.elementAt(3).text),
+                  ),
+                ];
+              },
             ),
           ),
         ],
