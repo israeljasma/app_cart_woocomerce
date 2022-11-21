@@ -16,14 +16,10 @@ class WoocomerceProvider extends ChangeNotifier {
   List<ProductModel> latestProducts = [];
   List<ProductModel> relatedProducts = [];
   List<ProductModel> saleProducts = [];
-  List<Category> productsCategories = [];
   List<Category> categoriesList = [];
-  List<ProductModel> categoryProductsList = [];
 
   int _productPage = 0;
-  int _categoriesPage = 0;
   int _categoriesListPage = 0;
-  int _categoryProductsListPage = 0;
   int _saleProductsPage = 0;
   late int row = 10;
   late int col;
@@ -41,7 +37,6 @@ class WoocomerceProvider extends ChangeNotifier {
 
   WoocomerceProvider() {
     print('WoocomerceProvider inicializado');
-    getCategories();
     getLatestProducts();
     getMatrixCategories();
     getCategoriesList();
@@ -89,25 +84,6 @@ class WoocomerceProvider extends ChangeNotifier {
         .toList();
 
     onDisplayProducts = [...onDisplayProducts, ...products];
-
-    notifyListeners();
-  }
-
-  getCategories() async {
-    _categoriesPage++;
-    Map<String, dynamic> parameters = {
-      'consumer_secret': _consumerSecret,
-      'consumer_key': _consumerKey
-    };
-
-    parameters.addAll({'page': '$_categoriesPage'});
-    final jsonData =
-        await _getJsonData('/wp-json/wc/v3/products/categories', parameters);
-    List<Category> categories = (json.decode(jsonData) as List)
-        .map((data) => Category.fromJson(data))
-        .toList();
-
-    productsCategories = [...productsCategories, ...categories];
 
     notifyListeners();
   }
@@ -221,29 +197,6 @@ class WoocomerceProvider extends ChangeNotifier {
     matrixCategories;
 
     print(matrixCategories[4][7]);
-  }
-
-  getCategoryProductsList(String idCategory) async {
-    _categoryProductsListPage++;
-    Map<String, dynamic> parameters = {
-      'consumer_secret': _consumerSecret,
-      'consumer_key': _consumerKey
-    };
-    parameters.addAll({'category': idCategory});
-    parameters.addAll({'page': '$_categoryProductsListPage'});
-    final jsonData = await _getJsonData('/wp-json/wc/v3/products', parameters);
-    List<ProductModel> categories = (json.decode(jsonData) as List)
-        .map((data) => ProductModel.fromJson(data))
-        .toList();
-
-    categoryProductsList = [...categoryProductsList, ...categories];
-
-    notifyListeners();
-  }
-
-  resetCategoryProductsListParameters() async {
-    categoryProductsList.clear();
-    _categoryProductsListPage = 0;
   }
 
   Future<List<ProductModel>> searchProducts(String search) async {
