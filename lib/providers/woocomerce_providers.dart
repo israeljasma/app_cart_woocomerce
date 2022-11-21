@@ -44,7 +44,6 @@ class WoocomerceProvider extends ChangeNotifier {
     getCategories();
     getLatestProducts();
     getMatrixCategories();
-    getProducts();
     getCategoriesList();
     getSaleProducts();
   }
@@ -58,11 +57,7 @@ class WoocomerceProvider extends ChangeNotifier {
   }
 
   getProducts({
-    int? pageNumber,
-    int? pageSize,
-    String? strSearch,
-    String? categoryId,
-    String? sortBy,
+    String? categoryID,
   }) async {
     _productPage++;
     print('getOnDisplayWoocomerce');
@@ -73,16 +68,11 @@ class WoocomerceProvider extends ChangeNotifier {
 
     parameters.addAll({'page': '$_productPage'});
 
-    if (pageSize != null) {
-      parameters.addAll({'per_page': pageSize});
+    if (categoryID != null) {
+      parameters.addAll({'category': categoryID});
     }
-
     if (_strSearch != '') {
       parameters.addAll({'search': _strSearch});
-    }
-
-    if (categoryId != null) {
-      parameters.addAll({'category': categoryId});
     }
 
     if (_orderBy != '') {
