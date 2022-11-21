@@ -1,5 +1,6 @@
 import 'package:app_cart_woocomerce/models/models.dart';
 import 'package:app_cart_woocomerce/providers/providers.dart';
+import 'package:app_cart_woocomerce/utils/utils.dart';
 import 'package:app_cart_woocomerce/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -21,30 +22,37 @@ class _BodyState extends State<Body> {
   @override
   void initState() {
     woocomerceAPI = Provider.of<WoocomerceProvider>(context, listen: false);
-    woocomerceAPI.getCategoryProductsList(widget.categoryID);
+    woocomerceAPI.getProducts(categoryID: widget.categoryID);
     super.initState();
   }
 
   @override
   void dispose() {
-    woocomerceAPI.resetCategoryProductsListParameters();
+    woocomerceAPI.resetProductsParameters();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer<WoocomerceProvider>(
-        builder: (context, wocomerceProvider, child) {
-          if (wocomerceProvider.categoryProductsList.isNotEmpty) {
-            return _ProductList(
-              products: wocomerceProvider.categoryProductsList,
-              onNextPage: () =>
-                  wocomerceProvider.getCategoryProductsList(widget.categoryID),
-            );
-          }
-          return const Center(child: CircularProgressIndicator());
-        },
+      body: Column(
+        children: [
+          _ProductFilters(),
+          Flexible(
+            child: Consumer<WoocomerceProvider>(
+              builder: (context, wocomerceProvider, child) {
+                if (wocomerceProvider.onDisplayProducts.isNotEmpty) {
+                  return _ProductList(
+                    products: wocomerceProvider.onDisplayProducts,
+                    onNextPage: () => wocomerceProvider.getProducts(
+                        categoryID: widget.categoryID),
+                  );
+                }
+                return const Center(child: CircularProgressIndicator());
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -121,3 +129,164 @@ class _ProductListState extends State<_ProductList> {
     );
   }
 }
+
+class _ProductFilters extends StatelessWidget {
+  _ProductFilters({
+    Key? key,
+  }) : super(key: key);
+  final Map<SortBy, int> parameters = {
+    SortBy('popularity', 'Popular', 'asc'): 1,
+    SortBy('modified', 'Ultimos Agregados', 'asc'): 2,
+    SortBy('price', 'Precio: Alto a Bajo', 'desc'): 3,
+    SortBy('price', 'Precio: Bajo a Alto', 'asc'): 4,
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    var _productList = Provider.of<WoocomerceProvider>(context, listen: false);
+    return Container(
+      height: 51,
+      margin: const EdgeInsets.fromLTRB(10, 10, 10, 5),
+      child: Row(
+        children: [
+          Flexible(
+            child: TextField(
+              decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.search),
+                hintText: 'Buscar',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                  borderSide: BorderSide.none,
+                ),
+                fillColor: Colors.black12,
+                filled: true,
+              ),
+              onChanged: (value) {
+                _productList.getSuggestionByQueryTest(value);
+                // print(value);
+              },
+              // onSubmitted: (value) {
+              //   print(value);
+              // },
+            ),
+          ),
+          const SizedBox(width: 15),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.black12,
+              borderRadius: BorderRadius.circular(9),
+            ),
+            child: PopupMenuButton<SortBy>(
+              icon: const Icon(Icons.sort_outlined),
+              onSelected: (value) {
+                _productList.resetProductsParameters();
+                _productList.setProductsParameters(
+                    orderBy: value.orderBy, sortOrder: value.sortOrder);
+                _productList.getProducts();
+              },
+              itemBuilder: (BuildContext context) {
+                return <PopupMenuEntry<SortBy>>[
+                  PopupMenuItem<SortBy>(
+                    value: parameters.keys.elementAt(0),
+                    child: Text(parameters.keys.elementAt(0).text),
+                  ),
+                  PopupMenuItem<SortBy>(
+                    value: parameters.keys.elementAt(1),
+                    child: Text(parameters.keys.elementAt(1).text),
+                  ),
+                  PopupMenuItem<SortBy>(
+                    value: parameters.keys.elementAt(2),
+                    child: Text(parameters.keys.elementAt(2).text),
+                  ),
+                  PopupMenuItem<SortBy>(
+                    value: parameters.keys.elementAt(3),
+                    child: Text(parameters.keys.elementAt(3).text),
+                  ),
+                ];
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+// class _ProductFilters extends StatelessWidget {
+//   _ProductFilters({
+//     Key? key,
+//   }) : super(key: key);
+//   final Map<SortBy, int> parameters = {
+//     SortBy('popularity', 'Popular', 'asc'): 1,
+//     SortBy('modified', 'Ultimos Agregados', 'asc'): 2,
+//     SortBy('price', 'Precio: Alto a Bajo', 'desc'): 3,
+//     SortBy('price', 'Precio: Bajo a Alto', 'asc'): 4,
+//   };
+
+//   @override
+//   Widget build(BuildContext context) {
+//     final _productList =
+//         Provider.of<WoocomerceProvider>(context, listen: false);
+//     return Container(
+//       height: 51,
+//       margin: const EdgeInsets.fromLTRB(10, 10, 10, 5),
+//       child: Row(
+//         children: [
+//           Flexible(
+//             child: TextField(
+//               decoration: InputDecoration(
+//                 prefixIcon: const Icon(Icons.search),
+//                 hintText: 'Buscar',
+//                 border: OutlineInputBorder(
+//                   borderRadius: BorderRadius.circular(15.0),
+//                   borderSide: BorderSide.none,
+//                 ),
+//                 fillColor: Colors.black12,
+//                 filled: true,
+//               ),
+//               onChanged: (value) {
+//                 _productList.getSuggestionByQueryTest(value);
+//               },
+//             ),
+//           ),
+//           const SizedBox(width: 15),
+//           Container(
+//             decoration: BoxDecoration(
+//               color: Colors.black12,
+//               borderRadius: BorderRadius.circular(9),
+//             ),
+//             child: PopupMenuButton<SortBy>(
+//               icon: const Icon(Icons.sort_outlined),
+//               onSelected: (value) {
+//                 _productList.resetProductsParameters();
+//                 _productList.setProductsParameters(
+//                     orderBy: value.orderBy, sortOrder: value.sortOrder);
+//                 _productList.getProducts();
+//               },
+//               itemBuilder: (BuildContext context) {
+//                 return <PopupMenuEntry<SortBy>>[
+//                   PopupMenuItem<SortBy>(
+//                     value: parameters.keys.elementAt(0),
+//                     child: Text(parameters.keys.elementAt(0).text),
+//                   ),
+//                   PopupMenuItem<SortBy>(
+//                     value: parameters.keys.elementAt(1),
+//                     child: Text(parameters.keys.elementAt(1).text),
+//                   ),
+//                   PopupMenuItem<SortBy>(
+//                     value: parameters.keys.elementAt(2),
+//                     child: Text(parameters.keys.elementAt(2).text),
+//                   ),
+//                   PopupMenuItem<SortBy>(
+//                     value: parameters.keys.elementAt(3),
+//                     child: Text(parameters.keys.elementAt(3).text),
+//                   ),
+//                 ];
+//               },
+//             ),
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+// }
