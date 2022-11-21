@@ -5,22 +5,49 @@ import 'package:app_cart_woocomerce/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class Body extends StatelessWidget {
+class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
+
+  @override
+  State<Body> createState() => _BodyState();
+}
+
+class _BodyState extends State<Body> {
+  late WoocomerceProvider woocomerceAPI;
+
+  @override
+  void initState() {
+    woocomerceAPI = Provider.of<WoocomerceProvider>(context, listen: false);
+    woocomerceAPI.getProducts();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    woocomerceAPI.resetProductsParameters();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Consumer<WoocomerceProvider>(
-        builder: (context, wocomerceProvider, child) {
-          if (wocomerceProvider.onDisplayProducts.isNotEmpty) {
-            return _ProductList(
-              products: wocomerceProvider.onDisplayProducts,
-              onNextPage: () => wocomerceProvider.getProducts(),
-            );
-          }
-          return const Center(child: CircularProgressIndicator());
-        },
+      body: Column(
+        children: [
+          _ProductFilters(),
+          Flexible(
+            child: Consumer<WoocomerceProvider>(
+              builder: (context, wocomerceProvider, child) {
+                if (wocomerceProvider.onDisplayProducts.isNotEmpty) {
+                  return _ProductList(
+                    products: wocomerceProvider.onDisplayProducts,
+                    onNextPage: () => wocomerceProvider.getProducts(),
+                  );
+                }
+                return const Center(child: CircularProgressIndicator());
+              },
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -79,7 +106,6 @@ class _ProductListState extends State<_ProductList> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _ProductFilters(),
           const SizedBox(height: 5),
           Expanded(
             child: GridView.builder(
